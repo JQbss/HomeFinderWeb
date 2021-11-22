@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
-    @Autowired
-    UserService userService;
+    final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/createUser")
     public UserRecord createUser(@RequestBody User user) throws FirebaseAuthException {
-        System.out.println("@@@@@@@@@We in create");
         return userService.addUser(user);
     }
 

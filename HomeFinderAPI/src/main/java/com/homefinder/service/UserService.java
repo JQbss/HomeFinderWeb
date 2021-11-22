@@ -11,11 +11,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    @Autowired
-    private FirebaseConfig firebaseConfig;
+    private final FirebaseAuth firebaseAuth;
+
+    public UserService(FirebaseAuth firebaseAuth) {
+        this.firebaseAuth = firebaseAuth;
+    }
 
     public UserRecord addUser(User user) throws FirebaseAuthException {
-        System.out.println(user.getEmail()+"   "+user.getPassword());
-        return firebaseConfig.firebaseAuth().createUser(new UserRecord.CreateRequest().setEmail(user.getEmail()).setPassword(user.getPassword()));
+        return firebaseAuth.createUser(new UserRecord.CreateRequest().setEmail(user.getEmail()).setPassword(user.getPassword()));
     }
 }

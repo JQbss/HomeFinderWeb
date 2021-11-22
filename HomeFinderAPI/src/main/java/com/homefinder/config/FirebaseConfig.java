@@ -21,7 +21,7 @@ public class FirebaseConfig {
 
     @Bean
     public FirebaseApp initialize() throws IOException {
-        FileInputStream serviceAccount = new FileInputStream("./serviceAccount.json");
+        InputStream serviceAccount = serviceAccountResource.getInputStream();
         FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                 .setDatabaseUrl("https://homefinder-7c018-default-rtdb.europe-west1.firebasedatabase.app")
