@@ -4,14 +4,13 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 import com.homefinder.model.User;
 import com.homefinder.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.List;
 @RestController
+@RequestMapping("/api/")
 public class UserController {
 
     final UserService userService;
@@ -20,9 +19,25 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/createUser")
+//    @GetMapping("/users")
+//    List<UserRecord> all(){
+//        return userService.findAll();
+//    }
+
+    @PostMapping("/users")
     public UserRecord createUser(@RequestBody User user) throws FirebaseAuthException {
         return userService.addUser(user);
+    }
+
+    @GetMapping("/users/{id}")
+    UserRecord one(@PathVariable String id) {
+        return userService.findById(id);
+                //.orElseThrow(() -> new EmployeeNotFoundException(id));
+    }
+
+    @DeleteMapping("/users/{id}")
+    void deleteEmployee(@PathVariable String id) throws FirebaseAuthException {
+        userService.deleteById(id);
     }
 
 }

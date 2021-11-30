@@ -1,27 +1,37 @@
 package com.homefinder.model;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private String username;
     private String email;
     private String password;
     private String phoneNumber;
     private String firstName;
     private String lastName;
-    public User(String username, String email, String password, String phoneNumber, String firstName, String lastName) {
+    private String Uid;
+    private boolean EmailVerified;
+
+    public User(String username, String email, String password, String phoneNumber, String firstName, String lastName, String uid, boolean emailVerified) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.firstName = firstName;
         this.lastName = lastName;
-    }
-
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
+        Uid = uid;
+        EmailVerified = emailVerified;
     }
 
     public User() {
+    }
+
+    public boolean isEmailVerified() {
+        return EmailVerified;
+    }
+
+    public void setEmailVerified(boolean emailVerified) {
+        EmailVerified = emailVerified;
     }
 
     public String getPassword() {
@@ -70,5 +80,13 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getUid() {
+        return Uid;
+    }
+
+    public void setUid(String uid) {
+        Uid = uid;
     }
 }

@@ -5,6 +5,8 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.internal.FirebaseService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,4 +46,6 @@ public class FirebaseConfig {
     public FirebaseDatabase firebaseDatabase(){
         return FirebaseDatabase.getInstance();
     }
+
+
 }
