@@ -1,6 +1,8 @@
 package com.homefinder.controller;
 
 
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.UserRecord;
 import com.homefinder.model.User;
 import com.homefinder.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -9,9 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.attribute.UserPrincipal;
 
@@ -24,7 +24,10 @@ public class AuthController {
         this.userService = userService;
     }
 
-
+    @PostMapping("/users")
+    public UserRecord createUser(@RequestBody User user) throws FirebaseAuthException {
+        return userService.addUser(user);
+    }
     @GetMapping("/user-details")
     public ResponseEntity<User> getUserInfo() {
         User userPrincipal = null;

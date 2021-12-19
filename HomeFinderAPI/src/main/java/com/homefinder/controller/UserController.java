@@ -24,10 +24,7 @@ public class UserController {
 //        return userService.findAll();
 //    }
 
-    @PostMapping("/users")
-    public UserRecord createUser(@RequestBody User user) throws FirebaseAuthException {
-        return userService.addUser(user);
-    }
+
 
     @GetMapping("/users/{id}")
     UserRecord one(@PathVariable String id) {
