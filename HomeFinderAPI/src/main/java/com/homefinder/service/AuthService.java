@@ -15,12 +15,15 @@ import javax.servlet.http.HttpServletRequest;
 
 @Service
 public class AuthService {
-    @Autowired
-    FirebaseAuth firebaseAuth;
-    @Autowired
-    HttpServletRequest httpServletRequest;
-    @Autowired
-    SecurityProperties securityProps;
+    final FirebaseAuth firebaseAuth;
+    final HttpServletRequest httpServletRequest;
+    final SecurityProperties securityProps;
+
+    public AuthService(FirebaseAuth firebaseAuth, HttpServletRequest httpServletRequest, SecurityProperties securityProps) {
+        this.firebaseAuth = firebaseAuth;
+        this.httpServletRequest = httpServletRequest;
+        this.securityProps = securityProps;
+    }
 
     public User getUser(){
         User userPrincipal = null;
