@@ -1,15 +1,7 @@
-package com.homefinder.repository;
-
-import com.google.firebase.database.FirebaseDatabase;
-import org.springframework.stereotype.Repository;
-
-//@Repository
-//public class AnnouncementRepository {
+//package com.homefinder.repository;
 //
-//    final FirebaseDatabase firebaseDatabase;
+//import com.homefinder.model.Announcement;
 //
-//    public AnnouncementRepository(FirebaseDatabase firebaseDatabase) {
-//        this.firebaseDatabase = firebaseDatabase;
-//    }
+//public class AnnouncementRepository extends DefaultFirebaseRealtimeDatabaseRepository<Announcement,String> {
 //
 //}

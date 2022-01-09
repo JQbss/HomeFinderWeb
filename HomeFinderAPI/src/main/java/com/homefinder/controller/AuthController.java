@@ -30,14 +30,12 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @PostMapping("/users")
+    @PostMapping("/register")
     public UserRecord createUser(@RequestBody User user) throws FirebaseAuthException {
         return userService.addUser(user);
     }
     @PostMapping("/login")
     public String login(@RequestBody User user){
-        System.out.println("We innnn");
-        System.out.println(user.getEmail()+"   "+user.getPassword());
         String uri ="https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDGoLjxXsnTNhwu9WrHOheIeZUdyG224Zc";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

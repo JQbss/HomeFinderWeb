@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/users")
 public class UserController {
 
     final UserService userService;
@@ -19,20 +19,18 @@ public class UserController {
         this.userService = userService;
     }
 
-//    @GetMapping("/users")
-//    List<UserRecord> all(){
-//        return userService.findAll();
-//    }
+    @GetMapping
+    List<UserRecord> all(){
+        return userService.findAll();
+    }
 
-
-
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     UserRecord one(@PathVariable String id) {
         return userService.findById(id);
                 //.orElseThrow(() -> new EmployeeNotFoundException(id));
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/{id}")
     void deleteEmployee(@PathVariable String id) throws FirebaseAuthException {
         userService.deleteById(id);
     }

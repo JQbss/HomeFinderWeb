@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 @Component
 public class FirebaseAuthenticationTokenFilter extends OncePerRequestFilter {
+
     private final static String TOKEN_HEADER = "Authorization";
 
     @Override

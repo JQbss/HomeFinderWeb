@@ -10,9 +10,10 @@ public class User implements Serializable {
     private String firstName;
     private String lastName;
     private String Uid;
+    private Role role;
     private boolean EmailVerified;
 
-    public User(String username, String email, String password, String phoneNumber, String firstName, String lastName, String uid, boolean emailVerified) {
+    public User(String username, String email, String password, String phoneNumber, String firstName, String lastName, String uid, Role role, boolean emailVerified) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -20,10 +21,19 @@ public class User implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         Uid = uid;
+        this.role = role;
         EmailVerified = emailVerified;
     }
 
     public User() {
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public boolean isEmailVerified() {
