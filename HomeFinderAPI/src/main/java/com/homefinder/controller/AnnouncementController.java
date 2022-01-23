@@ -20,7 +20,7 @@ public class AnnouncementController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createAnnouncement(@RequestBody Announcement announcement) {
+    public ResponseEntity<Announcement> createAnnouncement(@RequestBody Announcement announcement) {
         announcementService.add(announcement);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")

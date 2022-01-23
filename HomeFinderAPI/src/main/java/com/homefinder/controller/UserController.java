@@ -5,12 +5,14 @@ import com.google.firebase.auth.UserRecord;
 import com.homefinder.model.User;
 import com.homefinder.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.async.DeferredResult;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/home_finder/users")
 public class UserController {
 
     final UserService userService;
@@ -19,15 +21,29 @@ public class UserController {
         this.userService = userService;
     }
 
+    @PostMapping
+    public ResponseEntity<User> createUser(@RequestBody User user) throws FirebaseAuthException {
+        userService.addUser(user);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(user.getUid())
+                .toUri();
+        return ResponseEntity.created(location).build();
+    }
     @GetMapping
-    List<UserRecord> all(){
-        return userService.findAll();
+    public DeferredResult<ResponseEntity<String>> all(){
+        DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
+        this.userService.findAll().whenComplete((serviceResult, throwable) ->
+                result.setResult(ResponseEntity.ok(serviceResult)));
+        return result;
     }
 
     @GetMapping("/{id}")
-    UserRecord one(@PathVariable String id) {
-        return userService.findById(id);
-                //.orElseThrow(() -> new EmployeeNotFoundException(id));
+    public DeferredResult<ResponseEntity<String>> getOne(@PathVariable String id){
+        DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
+        this.userService.getOne(id).whenComplete((serviceResult, throwable) ->
+                result.setResult(ResponseEntity.ok(serviceResult)));
+        return result;
     }
 
     @DeleteMapping("/{id}")
