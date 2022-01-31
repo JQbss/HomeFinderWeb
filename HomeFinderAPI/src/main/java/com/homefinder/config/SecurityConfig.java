@@ -1,9 +1,7 @@
 package com.homefinder.config;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.homefinder.security.FirebaseAuthenticationTokenFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -17,8 +15,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,16 +24,19 @@ import java.util.Map;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Order(1000)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    ObjectMapper objectMapper;
-    @Autowired
-    FirebaseAuthenticationTokenFilter tokenAuthenticationFilter;
+    final ObjectMapper objectMapper;
+    final FirebaseAuthenticationTokenFilter tokenAuthenticationFilter;
 
-    public FirebaseAuthenticationTokenFilter firebaseAuthenticationFilterBean() {
-        FirebaseAuthenticationTokenFilter authenticationTokenFilter = new FirebaseAuthenticationTokenFilter();
-
-        return authenticationTokenFilter;
+    public SecurityConfig(ObjectMapper objectMapper, FirebaseAuthenticationTokenFilter tokenAuthenticationFilter) {
+        this.objectMapper = objectMapper;
+        this.tokenAuthenticationFilter = tokenAuthenticationFilter;
     }
+
+//    public FirebaseAuthenticationTokenFilter firebaseAuthenticationFilterBean() {
+//        FirebaseAuthenticationTokenFilter authenticationTokenFilter = new FirebaseAuthenticationTokenFilter();
+//
+//        return authenticationTokenFilter;
+//    }
     @Bean
     public AuthenticationEntryPoint restAuthenticationEntryPoint() {
         return (httpServletRequest, httpServletResponse, e) -> {
@@ -58,6 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests()
                 .antMatchers("/api/public/**","/auth/login","/auth/register").permitAll()
                 .antMatchers(HttpMethod.POST,"/home_finder/users").permitAll()
+                .antMatchers(HttpMethod.GET,"/home_finder/announcement").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
