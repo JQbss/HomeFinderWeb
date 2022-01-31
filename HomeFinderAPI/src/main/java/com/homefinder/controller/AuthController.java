@@ -18,10 +18,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.nio.file.attribute.UserPrincipal;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/auth")
 public class AuthController {
    final UserService userService;
@@ -30,11 +33,17 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @PostMapping("/register")
-    public UserRecord createUser(@RequestBody User user) throws FirebaseAuthException {
-        return userService.addUser(user);
+    @RequestMapping(method = RequestMethod.POST, path = "/register")
+    public ResponseEntity<User> createUser(@RequestBody User user) throws FirebaseAuthException {
+        userService.addUser(user);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(user.getUid())
+                .toUri();
+        return ResponseEntity.created(location).build();
     }
-    @PostMapping("/login")
+
+    @RequestMapping(method = RequestMethod.POST, path = "/login")
     public String login(@RequestBody User user){
         String uri ="https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDGoLjxXsnTNhwu9WrHOheIeZUdyG224Zc";
         HttpHeaders headers = new HttpHeaders();
@@ -50,7 +59,7 @@ public class AuthController {
         return restTemplate.postForObject(uri, request, String.class);
     }
 
-    @GetMapping("/user-details")
+    @RequestMapping(method = RequestMethod.GET, path = "/user-details")
     public ResponseEntity<User> getUserInfo() {
         User userPrincipal = null;
         SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -61,6 +70,5 @@ public class AuthController {
         System.out.println(userPrincipal);
         return ResponseEntity.ok(userPrincipal);
     }
-
 
 }
