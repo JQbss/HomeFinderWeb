@@ -1,14 +1,17 @@
+import { Link } from "react-router-dom";
 import ButtonStandart from "../../small-elements/ButtonStandart";
 
 const Header = (props) => {
   return (
     <div className="header-container">
       <div className="header-container-image">
-        <img
-          src="/house-logo-1.png"
-          alt="house-logo-1"
-          style={{ height: "105px" }}
-        />
+        <Link to="/">
+          <img
+            src="/house-logo-1.png"
+            alt="house-logo-1"
+            style={{ height: "105px" }}
+          />
+        </Link>
       </div>
       <div className="header-main-menu-container">
         <div className="header-main-menu">
@@ -22,7 +25,7 @@ const Header = (props) => {
             <a href="#">Jak to działa?</a>
           </li>
           <li>
-            <a href="#">Moje konto</a>
+            <Link to="/user-profile">Moje konto</Link>
           </li>
           <hr />
         </div>
