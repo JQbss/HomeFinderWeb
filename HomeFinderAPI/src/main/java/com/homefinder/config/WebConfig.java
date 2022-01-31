@@ -6,15 +6,17 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 //link do dokumentacji http://localhost:8080/swagger-ui/index.html
 @Configuration
-@EnableWebSecurity
-@Order(1000)
-public class WebConfig  extends WebSecurityConfigurerAdapter {
+@EnableWebMvc
+public class WebConfig implements WebMvcConfigurer {
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/swagger-ui/**","/v3/api-docs/**", "/swagger-ui.html/**");
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**");
     }
 }

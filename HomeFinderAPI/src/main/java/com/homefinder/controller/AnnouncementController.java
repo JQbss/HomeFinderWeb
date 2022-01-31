@@ -11,7 +11,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/announcement")
+@RequestMapping("/home_finder/announcement")
 public class AnnouncementController {
     final AnnouncementService announcementService;
 
@@ -28,9 +28,13 @@ public class AnnouncementController {
                 .toUri();
         return ResponseEntity.created(location).build();
     }
+
     @GetMapping
-    public ResponseEntity<Object> all(){
-        return ResponseEntity.ok().body(announcementService.getAll());
+    public DeferredResult<ResponseEntity<String>> all(){
+        DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
+        this.announcementService.getAll().whenComplete((serviceResult, throwable) ->
+                result.setResult(ResponseEntity.ok(serviceResult)));
+        return result;
     }
 
     @GetMapping("/{id}")
