@@ -19,7 +19,7 @@ const Header = (props) => {
             <a href="#">Wyszukaj</a>
           </li>
           <li>
-            <a href="#">Aktualności</a>
+            <a href="/news">Aktualności</a>
           </li>
           <li>
             <a href="#">Jak to działa?</a>

@@ -11,7 +11,9 @@ ReactDOM.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="user-profile" element={<App page={"user-profile"}/>} />
+        <Route path="user-profile" element={<App page={"user-profile"} />} />
+        <Route path="news" element={<App page={"news"} />} />
+        <Route path="news/:newsId" element={<App page={"news-details"} />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,

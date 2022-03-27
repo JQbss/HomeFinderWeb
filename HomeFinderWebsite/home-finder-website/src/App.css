@@ -238,7 +238,7 @@ html {
 
   text-align: center;
   vertical-align: middle;
-  
+
   transform: translateY(-50%) translateX(-50%);
 }
 
@@ -248,25 +248,124 @@ html {
   width: 270px;
   height: 80px;
 
-
   background: rgba(175, 217, 205, 0.85);
   box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
 
   text-align: center;
   vertical-align: middle;
-  
+
   transform: translateY(-50%) translateX(-50%);
 }
 
-.offer-home-blurred-more a{
+.offer-home-blurred-more a {
   font-size: 24px;
   text-decoration: none;
   color: #000000;
   font-weight: 700;
 }
 
-.offer-home-blurred-more a:hover{
+.offer-home-blurred-more a:hover {
   color: #000000;
 }
 
+.news-root {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  min-height: calc(100vh - 110px);
+}
+
+.news-container {
+  display: flex;
+  width: 800px;
+  flex-direction: column;
+  align-items: center;
+  margin: 30px 0 0 0;
+}
+
+.news-item {
+  width: 100%;
+  height: 200px;
+  position: relative;
+
+  background: #fcfbed;
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.2);
+  border-radius: 45px;
+  margin: 30px 0 30px 0;
+  padding: 20px 100px 40px 30px;
+}
+
+.news-item h3 {
+  color: #265954;
+  font-weight: 600;
+}
+
+.news-item span {
+  color: #000000;
+}
+
+.news-item a {
+  text-decoration: none;
+}
+
+.news-details-root {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  min-height: calc(100vh - 110px);
+}
+
+.news-details-container {
+  display: flex;
+  width: 800px;
+  flex-direction: column;
+  align-items: center;
+  margin: 30px 0 30px 0;
+
+  background: #fcfbed;
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.2);
+  border-radius: 45px;
+
+  padding: 30px;
+}
+
+.news-details-container h2 {
+  color: #265954;
+  font-weight: 600;
+  align-self: flex-start;
+}
+
+.news-details-team {
+  display: flex;
+  flex-direction: column;
+  margin: 30px 0 30px 0;
+}
+
+.news-details-team a {
+  font-weight: 600;
+  color: #265954;
+  text-decoration: none;
+
+  transition: background-size 0.3s, background-position 0s 0.3s; /*change after the size immediately*/
+  background-image: linear-gradient(#a7695c, #a7695c);
+  background-position: 0 100%; /*OR bottom left*/
+  background-size: 0% 4px;
+  background-repeat: no-repeat;
+  padding-bottom: 5px;
+}
+
+.news-details-team a:hover {
+  color: #a7695c;
+  background-position: 100% 100%; /*OR bottom right*/
+  background-size: 100% 4px;
+}
+
+.news-details-team div {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 0 0 10px 0;
+}
