@@ -25,7 +25,7 @@ const NewsDetails = (props) => {
               <img src={"/check-icon.png"} height={25} />
               Zespół Home Finder stara się dostraczyć użytkownikowi najlepszy
               produkt. <br />W razie pytań lub błędów serdercznie prosimy o{" "}
-              <a href="#">kontakt</a>.
+              <a href="/contact">kontakt</a>.
             </span>
           </div>
         </div>

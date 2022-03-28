@@ -34,6 +34,7 @@ const Header = (props) => {
             label="Kontakt"
             type={1}
             style={{ margin: "0 20px 0 20px" }}
+            href="contact"
           />
           <ButtonStandart
             label="Zaloguj się"
