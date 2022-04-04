@@ -19,7 +19,7 @@ const Header = (props) => {
             <a href="#">Wyszukaj</a>
           </li>
           <li>
-            <a href="#">Aktualności</a>
+            <a href="/news">Aktualności</a>
           </li>
           <li>
             <a href="#">Jak to działa?</a>
@@ -34,6 +34,7 @@ const Header = (props) => {
             label="Kontakt"
             type={1}
             style={{ margin: "0 20px 0 20px" }}
+            href="contact"
           />
           <ButtonStandart
             label="Zaloguj się"
