@@ -1,9 +1,10 @@
 package com.homefinder.controller;
 
-
 import com.homefinder.model.Announcement;
 import com.homefinder.service.AnnouncementService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -11,7 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/home_finder/announcement")
+@RequestMapping("/announcement")
 public class AnnouncementController {
     final AnnouncementService announcementService;
 
@@ -19,7 +20,7 @@ public class AnnouncementController {
         this.announcementService = announcementService;
     }
 
-    @PostMapping
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Announcement> createAnnouncement(@RequestBody Announcement announcement) {
         announcementService.add(announcement);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -29,7 +30,7 @@ public class AnnouncementController {
         return ResponseEntity.created(location).build();
     }
 
-    @GetMapping
+    @RequestMapping(method = RequestMethod.GET)
     public DeferredResult<ResponseEntity<String>> all(){
         DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
         this.announcementService.getAll().whenComplete((serviceResult, throwable) ->
@@ -37,7 +38,7 @@ public class AnnouncementController {
         return result;
     }
 
-    @GetMapping("/{id}")
+    @RequestMapping(method = RequestMethod.GET, path = "/{id}")
     public DeferredResult<ResponseEntity<String>> getOne(@PathVariable String id){
         DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
         this.announcementService.getOne(id).whenComplete((serviceResult, throwable) ->
