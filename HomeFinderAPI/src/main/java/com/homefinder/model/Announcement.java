@@ -12,14 +12,15 @@ public class Announcement {
     private String description;
     private NumberOfRooms numberOfRooms;
     private Level level;
-    private YesOrNoEnum furnished;
+    private boolean furnished;
     private long price;
-    private YesOrNoEnum priceIsNegotiable;
+    private boolean priceIsNegotiable;
     private TypeOfBuilding typeOfBuilding;
     private long additionalRent;
     private int area;
     private String localization;
     private String sellerUid;
+    private String link;
     private List<String> imageLinks;
     private AnnouncementStatus status;
     private int yearOfBuilding;
@@ -28,6 +29,30 @@ public class Announcement {
 
     public Announcement() {
 
+    }
+
+    public boolean isFurnished() {
+        return furnished;
+    }
+
+    public void setFurnished(boolean furnished) {
+        this.furnished = furnished;
+    }
+
+    public boolean isPriceIsNegotiable() {
+        return priceIsNegotiable;
+    }
+
+    public void setPriceIsNegotiable(boolean priceIsNegotiable) {
+        this.priceIsNegotiable = priceIsNegotiable;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 
     public String getUid() {
@@ -86,28 +111,12 @@ public class Announcement {
         this.level = level;
     }
 
-    public YesOrNoEnum getFurnished() {
-        return furnished;
-    }
-
-    public void setFurnished(YesOrNoEnum furnished) {
-        this.furnished = furnished;
-    }
-
     public long getPrice() {
         return price;
     }
 
     public void setPrice(long price) {
         this.price = price;
-    }
-
-    public YesOrNoEnum getPriceIsNegotiable() {
-        return priceIsNegotiable;
-    }
-
-    public void setPriceIsNegotiable(YesOrNoEnum priceIsNegotiable) {
-        this.priceIsNegotiable = priceIsNegotiable;
     }
 
     public TypeOfBuilding getTypeOfBuilding() {

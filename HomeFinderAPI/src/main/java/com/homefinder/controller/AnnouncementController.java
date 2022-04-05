@@ -1,5 +1,6 @@
 package com.homefinder.controller;
 
+import com.google.firebase.auth.FirebaseAuthException;
 import com.homefinder.model.Announcement;
 import com.homefinder.service.AnnouncementService;
 import org.springframework.http.ResponseEntity;
@@ -39,11 +40,16 @@ public class AnnouncementController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/{id}", produces = "application/json;charset=utf-8")
-    public DeferredResult<ResponseEntity<String>> getOne(@PathVariable String id){
-        DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
-        this.announcementService.getOne(id).whenComplete((serviceResult, throwable) ->
-                result.setResult(ResponseEntity.ok(serviceResult)));
+    public DeferredResult<ResponseEntity<?>> getOne(@PathVariable String id) {
+        DeferredResult<ResponseEntity<?>> result = new DeferredResult<>();
+        this.announcementService.getOne(id).whenComplete((serviceResult, throwable) -> result.setResult(ResponseEntity.ok(serviceResult)));
         return result;
+    }
+
+
+    @RequestMapping(method = RequestMethod.DELETE,path = "/{id}")
+    void deleteEmployee(@PathVariable String id) throws FirebaseAuthException {
+        announcementService.deleteById(id);
     }
 
 }
