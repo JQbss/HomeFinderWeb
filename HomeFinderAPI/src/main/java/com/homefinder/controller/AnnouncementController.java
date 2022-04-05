@@ -20,7 +20,7 @@ public class AnnouncementController {
         this.announcementService = announcementService;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST,produces = "application/json;charset=utf-8")
     public ResponseEntity<Announcement> createAnnouncement(@RequestBody Announcement announcement) {
         announcementService.add(announcement);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -30,7 +30,7 @@ public class AnnouncementController {
         return ResponseEntity.created(location).build();
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     public DeferredResult<ResponseEntity<String>> all(){
         DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
         this.announcementService.getAll().whenComplete((serviceResult, throwable) ->
@@ -38,7 +38,7 @@ public class AnnouncementController {
         return result;
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/{id}")
+    @RequestMapping(method = RequestMethod.GET, path = "/{id}", produces = "application/json;charset=utf-8")
     public DeferredResult<ResponseEntity<String>> getOne(@PathVariable String id){
         DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
         this.announcementService.getOne(id).whenComplete((serviceResult, throwable) ->
