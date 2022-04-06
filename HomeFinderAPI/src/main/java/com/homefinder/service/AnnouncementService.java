@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -29,8 +30,18 @@ public class AnnouncementService{
         announcementRef.push().setValueAsync(announcement);
     }
 
-    public void deleteById(String id) throws FirebaseAuthException {
-        announcementRef.child(id).removeValueAsync();
+    public void add(List<Announcement> announcement){
+        announcement.forEach(el ->{
+            announcementRef.push().setValueAsync(el);
+        });
+    }
+
+    public String deleteById(String id) throws FirebaseAuthException {
+        if(announcementRef.child(id)==null){
+            announcementRef.child(id).removeValueAsync();
+            return id;
+        }
+        return null;
     }
 
     @Async

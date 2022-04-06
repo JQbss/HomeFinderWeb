@@ -3,6 +3,7 @@ package com.homefinder.controller;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.homefinder.model.Announcement;
 import com.homefinder.service.AnnouncementService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,6 +12,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/announcement")
@@ -21,7 +23,7 @@ public class AnnouncementController {
         this.announcementService = announcementService;
     }
 
-    @RequestMapping(method = RequestMethod.POST,produces = "application/json;charset=utf-8")
+    @RequestMapping(method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     public ResponseEntity<Announcement> createAnnouncement(@RequestBody Announcement announcement) {
         announcementService.add(announcement);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -29,6 +31,12 @@ public class AnnouncementController {
                 .buildAndExpand(announcement.getUid())
                 .toUri();
         return ResponseEntity.created(location).build();
+    }
+
+    @RequestMapping(method = RequestMethod.POST,path = "/many", produces = "application/json;charset=utf-8")
+    public ResponseEntity<?> createManyAnnouncement(@RequestBody List<Announcement> announcement) {
+        announcementService.add(announcement);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json;charset=utf-8")
@@ -42,14 +50,22 @@ public class AnnouncementController {
     @RequestMapping(method = RequestMethod.GET, path = "/{id}", produces = "application/json;charset=utf-8")
     public DeferredResult<ResponseEntity<?>> getOne(@PathVariable String id) {
         DeferredResult<ResponseEntity<?>> result = new DeferredResult<>();
-        this.announcementService.getOne(id).whenComplete((serviceResult, throwable) -> result.setResult(ResponseEntity.ok(serviceResult)));
+        this.announcementService.getOne(id).whenComplete((serviceResult, throwable) ->{
+            if(serviceResult == null){
+                result.setResult(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+            }
+            result.setResult(ResponseEntity.ok(serviceResult));
+        });
         return result;
     }
 
 
     @RequestMapping(method = RequestMethod.DELETE,path = "/{id}")
-    void deleteEmployee(@PathVariable String id) throws FirebaseAuthException {
-        announcementService.deleteById(id);
+    ResponseEntity<?> deleteEmployee(@PathVariable String id) throws FirebaseAuthException {
+        if(announcementService.deleteById(id) == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
