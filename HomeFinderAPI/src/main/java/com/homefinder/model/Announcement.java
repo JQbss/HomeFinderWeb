@@ -2,6 +2,7 @@ package com.homefinder.model;
 
 import com.homefinder.model.announcementEnums.*;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class Announcement {
@@ -12,17 +13,23 @@ public class Announcement {
     private String description;
     private NumberOfRooms numberOfRooms;
     private Level level;
+    @Nullable
     private boolean furnished;
+    @Nullable
     private long price;
+    @Nullable
     private boolean priceIsNegotiable;
     private TypeOfBuilding typeOfBuilding;
+    @Nullable
     private long additionalRent;
+    @Nullable
     private int area;
     private String localization;
     private String sellerUid;
     private String link;
     private List<String> imageLinks;
     private AnnouncementStatus status;
+    @Nullable
     private int yearOfBuilding;
     private AnnouncementMarket market;
     private AnnouncementAdditionalArea additionalArea;

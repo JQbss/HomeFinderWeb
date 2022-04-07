@@ -38,6 +38,19 @@ public class AnnouncementController {
         announcementService.add(announcement);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    @RequestMapping(method = RequestMethod.PATCH,path = "/{id}", produces = "application/json;charset=utf-8")
+    public ResponseEntity<?> patchAnnouncement(@PathVariable String id, @RequestBody Announcement announcement) {
+        announcementService.patch(id,announcement);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, path = "/{id}", produces = "application/json;charset=utf-8")
+    public ResponseEntity<?> updateAnnouncement(@PathVariable String id, @RequestBody Announcement announcement) {
+        if(announcementService.update(id,announcement) == 201){
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     public DeferredResult<ResponseEntity<String>> all(){

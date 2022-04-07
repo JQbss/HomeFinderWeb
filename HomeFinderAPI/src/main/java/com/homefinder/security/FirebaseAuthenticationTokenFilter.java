@@ -39,7 +39,7 @@ public class FirebaseAuthenticationTokenFilter extends OncePerRequestFilter {
         try {
             //Authentication authentication = getAndValidateAuthentication(authToken);
             User user = firebaseTokenToUserDto(FirebaseAuth.getInstance().verifyIdToken(authToken));
-            if(user!=null){
+            if(user != null){
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user,null,null);
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
