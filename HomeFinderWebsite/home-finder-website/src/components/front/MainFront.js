@@ -5,17 +5,26 @@ import News from "./pages/News";
 import Contact from "./pages/Contact";
 import NewsDetails from "./pages/NewsDetails";
 import UserProfile from "./pages/UserProfile";
+import Announcement from "./pages/Announcement";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 const getBody = (pageName) => {
   switch (pageName) {
+    case "login":
+      return <Login />;
+    case "register":
+      return <Register />;
     case "user-profile":
       return <UserProfile />;
     case "news":
       return <News />;
-    case "contact":
-      return <Contact />;
     case "news-details":
       return <NewsDetails />;
+    case "contact":
+      return <Contact />;
+    case "announcement":
+      return <Announcement />;
     default:
       return <Home />;
   }

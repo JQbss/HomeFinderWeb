@@ -40,6 +40,7 @@ const Header = (props) => {
             label="Zaloguj się"
             type={0}
             style={{ margin: "0 20px 0 20px" }}
+            href="/login"
           />
         </div>
       </div>

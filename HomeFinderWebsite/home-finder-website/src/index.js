@@ -11,10 +11,16 @@ ReactDOM.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
+        <Route path="login" element={<App page={"login"} />} />
+        <Route path="register" element={<App page={"register"} />} />
         <Route path="user-profile" element={<App page={"user-profile"} />} />
         <Route path="news" element={<App page={"news"} />} />
-        <Route path="contact" element={<App page={"contact"} />} />
         <Route path="news/:newsId" element={<App page={"news-details"} />} />
+        <Route path="contact" element={<App page={"contact"} />} />
+        <Route
+          path="announcement/:announcementId"
+          element={<App page={"announcement"} />}
+        />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
