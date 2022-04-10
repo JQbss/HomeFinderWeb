@@ -434,3 +434,110 @@ html {
   align-self: flex-start;
   margin: 20px 0 0 0;
 }
+
+.ann-details-root {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  min-height: calc(100vh - 110px);
+}
+
+.ann-details-container {
+  display: flex;
+  width: 1200px;
+  flex-direction: column;
+  align-items: center;
+  margin: 30px 0 30px 0;
+
+  background: #fcfbed;
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.2);
+  border-radius: 45px;
+
+  padding: 30px;
+}
+
+.ann-details-container h2, h3 {
+  color: #265954;
+  font-weight: 600;
+}
+
+.ann-details-body {
+  display: flex;
+}
+
+.ann-details-body a {
+  font-weight: 600;
+  color: #265954;
+  text-decoration: none;
+
+  transition: background-size 0.3s, background-position 0s 0.3s; /*change after the size immediately*/
+  background-image: linear-gradient(#a7695c, #a7695c);
+  background-position: 0 100%; /*OR bottom left*/
+  background-size: 0% 4px;
+  background-repeat: no-repeat;
+  padding-bottom: 5px;
+}
+
+.ann-details-body a:hover {
+  color: #a7695c;
+  background-position: 100% 100%; /*OR bottom right*/
+  background-size: 100% 4px;
+}
+
+.ann-details-body h3{
+  margin: 10px 0 10px 0;
+}
+
+.ann-details-descr {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-root {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  min-height: calc(100vh - 200px);
+}
+
+.login-container {
+  display: flex;
+  width: 600px;
+  min-height: 260px;
+  flex-direction: column;
+  align-items: center;
+  margin: 30px 0 30px 0;
+  position: relative;
+
+  background: #fcfbed;
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.2);
+  border-radius: 45px;
+
+  padding: 30px;
+}
+
+.login-container h2, h3 {
+  color: #265954;
+  font-weight: 600;
+}
+
+.login-container a {
+  font-weight: 600;
+  color: #265954;
+  text-decoration: none;
+
+  transition: background-size 0.3s, background-position 0s 0.3s; /*change after the size immediately*/
+  background-image: linear-gradient(#a7695c, #a7695c);
+  background-position: 0 100%; /*OR bottom left*/
+  background-size: 0% 4px;
+  background-repeat: no-repeat;
+  padding-bottom: 5px;
+}
+
+.login-container a:hover {
+  color: #a7695c;
+  background-position: 100% 100%; /*OR bottom right*/
+  background-size: 100% 4px;
+}
