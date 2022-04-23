@@ -14,6 +14,7 @@ const UserProfile = (props) => {
       if (data == "error") {
         AuthManager.LogoutUser();
         navigate("/login");
+        window?.location?.reload();
       }
       setUserData(data);
     });

@@ -1,7 +1,15 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import AuthManager from "../../../classes/AuthManager";
 import ButtonStandart from "../../small-elements/ButtonStandart";
 
 const Header = (props) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    setIsLoggedIn(AuthManager.CheckLoginUser);
+  }, []);
+
   return (
     <div className="header-container">
       <div className="header-container-image">
@@ -36,12 +44,24 @@ const Header = (props) => {
             style={{ margin: "0 20px 0 20px" }}
             href="contact"
           />
-          <ButtonStandart
-            label="Zaloguj się"
-            type={0}
-            style={{ margin: "0 20px 0 20px" }}
-            href="/login"
-          />
+          {isLoggedIn ? (
+            <ButtonStandart
+              label="Wyloguj się"
+              type={0}
+              style={{ margin: "0 20px 0 20px" }}
+              onClick={() => {
+                AuthManager.LogoutUser();
+                window?.location?.reload();
+              }}
+            />
+          ) : (
+            <ButtonStandart
+              label="Zaloguj się"
+              type={0}
+              style={{ margin: "0 20px 0 20px" }}
+              href="/login"
+            />
+          )}
         </div>
       </div>
       <div className="header-container-line" />

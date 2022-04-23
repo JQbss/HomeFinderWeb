@@ -19,9 +19,11 @@ const Login = (props) => {
     AuthManager.LoginUser(email, passwd).then((response) => {
       if (response != "error") {
         navigate("/user-profile");
+        window?.location?.reload();
         setIsError(false);
       } else {
         AuthManager.LogoutUser();
+        window?.location?.reload();
         setIsError(true);
       }
     });

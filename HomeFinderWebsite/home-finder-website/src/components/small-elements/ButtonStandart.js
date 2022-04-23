@@ -4,9 +4,10 @@ const ButtonStandart = ({
   label = "",
   type = 0,
   style = {},
+  onClick = null,
 }) => {
   return btnType == "link" ? (
-    <a href={href}>
+    <a href={href} onClick={onClick}>
       <div
         className={type == 0 ? "button-normal" : "button-trans"}
         style={style}
@@ -18,6 +19,7 @@ const ButtonStandart = ({
     <button
       type="submit"
       className={type == 0 ? "button-normal" : "button-trans"}
+      onClick={onClick}
     >
       {label}
     </button>
