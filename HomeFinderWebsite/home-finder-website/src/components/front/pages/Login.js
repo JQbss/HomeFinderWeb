@@ -23,7 +23,6 @@ const Login = (props) => {
         setIsError(false);
       } else {
         AuthManager.LogoutUser();
-        window?.location?.reload();
         setIsError(true);
       }
     });
