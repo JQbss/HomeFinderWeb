@@ -24,6 +24,17 @@ class FetchManager {
         return data;
       });
   }
+
+  static async GetMany(entityName) {
+    return fetch(`${process.env.REACT_APP_API}/${entityName}`)
+      .then((response) => {
+        if (response.status == 200) return response.json();
+        else return "error";
+      })
+      .then((data) => {
+        return data;
+      });
+  }
 }
 
 export default FetchManager;

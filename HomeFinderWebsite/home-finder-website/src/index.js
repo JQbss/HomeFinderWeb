@@ -22,6 +22,16 @@ ReactDOM.render(
           element={<App page={"announcement"} />}
         />
         <Route path="*" element={<App />} />
+        <Route path="admin" element={<App admin page={"admin-home"} />} />
+        <Route path="admin/login" element={<App admin page={"admin-login"} />} />
+        <Route
+          path="admin/:entity"
+          element={<App admin page={"admin-list"} />}
+        />
+        <Route
+          path="admin/:entity/:action"
+          element={<App admin page={"admin-action"} />}
+        />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
