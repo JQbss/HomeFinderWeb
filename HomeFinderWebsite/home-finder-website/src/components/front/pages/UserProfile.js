@@ -1,20 +1,25 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { Oval } from "react-loader-spinner";
+import AuthManager from "../../../classes/AuthManager";
 import FetchManager from "../../../classes/FetchManager";
 import ButtonStandart from "../../small-elements/ButtonStandart";
 
 const UserProfile = (props) => {
-  const [userData, setUserData] = useState({
-    firstName: "Admin",
-    lastName: "Testowy",
-    phoneNumber: "1234567890",
-    email: "black.kote1@gmail.com",
-  });
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    FetchManager.GetUserData().then((data) => setUserData(data));
+    FetchManager.GetUserData().then((data) => {
+      if (data == "error") {
+        AuthManager.LogoutUser();
+        navigate("/login");
+      }
+      setUserData(data);
+    });
   }, []);
 
-  return (
+  return userData ? (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <div
         style={{
@@ -82,6 +87,8 @@ const UserProfile = (props) => {
         </div>
       </div>
     </div>
+  ) : (
+    <Oval color="#00BFFF" height={80} width={80} />
   );
 };
 

@@ -1,17 +1,30 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import AuthManager from "../../../classes/AuthManager";
 import ButtonStandart from "../../small-elements/ButtonStandart";
 
 const Login = (props) => {
   const navigate = useNavigate();
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    if (AuthManager.CheckLoginUser()) navigate("/user-profile");
+  }, []);
+
   const onSubmit = (e) => {
     e.preventDefault();
     const email = e.target.elements.email.value;
     const passwd = e.target.elements.password.value;
 
-    AuthManager.LoginUser(email, passwd).then((response) =>
-      navigate("/user-profile")
-    );
+    AuthManager.LoginUser(email, passwd).then((response) => {
+      if (response != "error") {
+        navigate("/user-profile");
+        setIsError(false);
+      } else {
+        AuthManager.LogoutUser();
+        setIsError(true);
+      }
+    });
   };
 
   return (
@@ -20,6 +33,11 @@ const Login = (props) => {
         <div className="login-container">
           <h2>Zaloguj się</h2>
           <div className="w-75">
+            {isError && (
+              <div class="alert alert-danger m-4" role="alert">
+                Nieprawidłowe hasło lub e-mail.
+              </div>
+            )}
             <form onSubmit={onSubmit}>
               <div class="form-group my-4">
                 <label for="exampleInputEmail1">E-mail</label>

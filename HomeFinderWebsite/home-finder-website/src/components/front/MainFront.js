@@ -8,9 +8,12 @@ import UserProfile from "./pages/UserProfile";
 import Announcement from "./pages/Announcement";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import NotFound from "./pages/NotFound";
 
 const getBody = (pageName) => {
   switch (pageName) {
+    case "home":
+      return <Home />;
     case "login":
       return <Login />;
     case "register":
@@ -26,7 +29,7 @@ const getBody = (pageName) => {
     case "announcement":
       return <Announcement />;
     default:
-      return <Home />;
+      return <NotFound />;
   }
 };
 

@@ -9,7 +9,7 @@ class AuthManager {
       headers: {
         "Content-Type": "application/json",
       },
-    }).then((resonse) => "ok");
+    }).then((response) => "ok");
   }
 
   static async LoginUser(email, password) {
@@ -22,13 +22,23 @@ class AuthManager {
       headers: {
         "Content-Type": "application/json",
       },
-    }).then((resonse) =>
-      resonse
-        .json()
-        .then((data) =>
-          localStorage.setItem("token", "Bearer " + data?.idToken)
-        )
+    }).then((response) =>
+      response.status == 200
+        ? response
+            .json()
+            .then((data) =>
+              localStorage.setItem("token", "Bearer " + data?.idToken)
+            )
+        : "error"
     );
+  }
+
+  static LogoutUser() {
+    localStorage.removeItem("token");
+  }
+
+  static CheckLoginUser() {
+    return localStorage.getItem("token") != null ? true : false;
   }
 }
 

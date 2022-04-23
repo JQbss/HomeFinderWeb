@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Oval } from "react-loader-spinner";
+import { useNavigate } from "react-router";
 import FetchManager from "../../../classes/FetchManager";
 
 const Announcement = (props) => {
+  const navigate = useNavigate();
   const { announcementId } = useParams();
   const [annData, setAnnData] = useState();
 
@@ -13,6 +15,8 @@ const Announcement = (props) => {
     );
   }, []);
 
+  if (annData == "error") navigate("/404");
+
   return annData ? (
     <>
       <div className="ann-details-root">
@@ -21,7 +25,11 @@ const Announcement = (props) => {
 
           <div className="ann-details-body">
             <div>
-              <img src={"/house-logo-1.png"} width={300} style={{marginRight:30}} />
+              <img
+                src={"/house-logo-1.png"}
+                width={300}
+                style={{ marginRight: 30 }}
+              />
             </div>
             <div className="ann-details-descr">
               {annData?.link && (

@@ -6,7 +6,8 @@ class FetchManager {
       },
     })
       .then((response) => {
-        return response.json();
+        if (response.status == 200) return response.json();
+        else return "error";
       })
       .then((data) => {
         return data;
@@ -16,7 +17,8 @@ class FetchManager {
   static async GetOne(entityName, id) {
     return fetch(`${process.env.REACT_APP_API}/${entityName}/${id}`)
       .then((response) => {
-        return response.json();
+        if (response.status == 200) return response.json();
+        else return "error";
       })
       .then((data) => {
         return data;

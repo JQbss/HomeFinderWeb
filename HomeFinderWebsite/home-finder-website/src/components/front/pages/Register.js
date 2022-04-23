@@ -1,9 +1,14 @@
 import { useNavigate } from "react-router";
+import { useEffect } from "react";
 import AuthManager from "../../../classes/AuthManager";
 import ButtonStandart from "../../small-elements/ButtonStandart";
 
 const Register = (props) => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (AuthManager.CheckLoginUser()) navigate("/user-profile");
+  }, []);
 
   const onSubmit = (e) => {
     e.preventDefault();

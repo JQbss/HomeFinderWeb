@@ -10,7 +10,7 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />} />
+        <Route exact path="/" element={<App page={"home"} />} />
         <Route path="login" element={<App page={"login"} />} />
         <Route path="register" element={<App page={"register"} />} />
         <Route path="user-profile" element={<App page={"user-profile"} />} />
@@ -21,6 +21,7 @@ ReactDOM.render(
           path="announcement/:announcementId"
           element={<App page={"announcement"} />}
         />
+        <Route path="*" element={<App />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
