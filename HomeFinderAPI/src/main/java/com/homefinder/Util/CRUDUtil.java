@@ -1,9 +1,9 @@
 package com.homefinder.Util;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.QuerySnapshot;
+import com.google.firebase.database.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -19,12 +19,14 @@ import java.util.concurrent.TimeUnit;
 public class CRUDUtil {
 
     private static final int waitTime = 2;
-    public static CompletableFuture<String> findAll(DatabaseReference ref){
+    public static CompletableFuture<String> findAll(DatabaseReference ref, int page, int limit){
         final String[] allJSON = new String[1];
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.orderByChild("uid").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Object document = dataSnapshot.getValue();
+                int currentIndex = 0;
+                int indexOfElement = limit*page;
                 List<Map<Object, Object>> listOfObject = new ArrayList<>();
                 for (Object key : ((HashMap) document).keySet()) {
                     if (key instanceof String) {
@@ -34,7 +36,10 @@ public class CRUDUtil {
                         for (Object kv :((HashMap) data).keySet()) {
                             map.put(kv, ((HashMap)data).get(kv));
                         }
-                        listOfObject.add(map);
+                        if(currentIndex >= indexOfElement && currentIndex < indexOfElement+ limit ) {
+                            listOfObject.add(map);
+                        }
+                        currentIndex++;
                     }
                 }
                 allJSON[0] = new Gson().toJson(listOfObject);

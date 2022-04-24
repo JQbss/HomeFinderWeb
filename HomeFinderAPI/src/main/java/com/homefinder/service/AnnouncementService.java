@@ -82,8 +82,8 @@ public class AnnouncementService{
     }
 
     @Async
-    public CompletableFuture<String> getAll() {
-        return CRUDUtil.findAll(announcementRef);
+    public CompletableFuture<String> getAll(int page, int limit) {
+        return CRUDUtil.findAll(announcementRef,page,limit);
     }
 
     @Async

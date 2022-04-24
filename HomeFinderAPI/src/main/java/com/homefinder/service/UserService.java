@@ -1,20 +1,16 @@
 package com.homefinder.service;
 
-import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
-import com.google.firebase.database.*;
-import com.google.gson.Gson;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.homefinder.Util.CRUDUtil;
 import com.homefinder.model.User;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @EnableAsync
@@ -40,12 +36,8 @@ public class UserService {
         return newUserRecord;
     }
 
-    public void getUser(){
-
-    }
-
-    public CompletableFuture<String> findAll() {
-        return CRUDUtil.findAll(userRef);
+    public CompletableFuture<String> findAll(int page, int limit) {
+        return CRUDUtil.findAll(userRef,page,limit);
     }
 
     public CompletableFuture<String> getOne(String id) {

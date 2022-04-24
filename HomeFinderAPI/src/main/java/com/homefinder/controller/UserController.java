@@ -32,9 +32,10 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public DeferredResult<ResponseEntity<String>> all(){
+    public DeferredResult<ResponseEntity<String>> all(@RequestParam(value = "page", defaultValue = "0") int page,
+                                                      @RequestParam(value = "limit", defaultValue = "25") int limit){
         DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
-        this.userService.findAll().whenComplete((serviceResult, throwable) ->
+        this.userService.findAll(page,limit).whenComplete((serviceResult, throwable) ->
                 result.setResult(ResponseEntity.ok(serviceResult)));
         return result;
     }
