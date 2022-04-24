@@ -35,7 +35,7 @@ public class AnnouncementService{
 
     public void add(List<Announcement> announcement){
         announcement.forEach(el ->{
-            announcementRef.push().setValueAsync(el);
+            add(el);
         });
     }
 

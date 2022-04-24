@@ -1,65 +1,39 @@
 package com.homefinder.model;
 
-import com.homefinder.model.announcementEnums.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
+@JsonInclude(NON_NULL)
 public class Announcement {
     private String Uid;
-    private AnnouncementType type;
-    private AnnouncementCategory category;
+    private Integer type;
+    private Integer category;
     private String title;
     private String description;
-    private NumberOfRooms numberOfRooms;
-    private Level level;
-    @Nullable
-    private boolean furnished;
-    @Nullable
-    private long price;
-    @Nullable
-    private boolean priceIsNegotiable;
-    private TypeOfBuilding typeOfBuilding;
-    @Nullable
-    private long additionalRent;
-    @Nullable
-    private int area;
+    private Integer numberOfRooms;
+    private Integer level;
+    private Boolean furnished;
+    private Long price;
+    private Boolean priceIsNegotiable;
+    private Integer typeOfBuilding;
+    private Long additionalRent;
+    private Integer area;
     private String localization;
     private String sellerUid;
     private String link;
     private List<String> imageLinks;
-    private AnnouncementStatus status;
-    @Nullable
-    private int yearOfBuilding;
-    private AnnouncementMarket market;
-    private AnnouncementAdditionalArea additionalArea;
+    private Integer status;
+    private Integer yearOfBuilding;
+
+    private Integer market;
+
+    private Integer additionalArea;
 
     public Announcement() {
 
-    }
-
-    public boolean isFurnished() {
-        return furnished;
-    }
-
-    public void setFurnished(boolean furnished) {
-        this.furnished = furnished;
-    }
-
-    public boolean isPriceIsNegotiable() {
-        return priceIsNegotiable;
-    }
-
-    public void setPriceIsNegotiable(boolean priceIsNegotiable) {
-        this.priceIsNegotiable = priceIsNegotiable;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
     }
 
     public String getUid() {
@@ -70,19 +44,19 @@ public class Announcement {
         Uid = uid;
     }
 
-    public AnnouncementType getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(AnnouncementType type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
-    public AnnouncementCategory getCategory() {
+    public Integer getCategory() {
         return category;
     }
 
-    public void setCategory(AnnouncementCategory category) {
+    public void setCategory(Integer category) {
         this.category = category;
     }
 
@@ -102,51 +76,67 @@ public class Announcement {
         this.description = description;
     }
 
-    public NumberOfRooms getNumberOfRooms() {
+    public Integer getNumberOfRooms() {
         return numberOfRooms;
     }
 
-    public void setNumberOfRooms(NumberOfRooms numberOfRooms) {
+    public void setNumberOfRooms(Integer numberOfRooms) {
         this.numberOfRooms = numberOfRooms;
     }
 
-    public Level getLevel() {
+    public Integer getLevel() {
         return level;
     }
 
-    public void setLevel(Level level) {
+    public void setLevel(Integer level) {
         this.level = level;
     }
 
-    public long getPrice() {
+    public Boolean getFurnished() {
+        return furnished;
+    }
+
+    public void setFurnished(Boolean furnished) {
+        this.furnished = furnished;
+    }
+
+    public Long getPrice() {
         return price;
     }
 
-    public void setPrice(long price) {
+    public void setPrice(Long price) {
         this.price = price;
     }
 
-    public TypeOfBuilding getTypeOfBuilding() {
+    public Boolean getPriceIsNegotiable() {
+        return priceIsNegotiable;
+    }
+
+    public void setPriceIsNegotiable(Boolean priceIsNegotiable) {
+        this.priceIsNegotiable = priceIsNegotiable;
+    }
+
+    public Integer getTypeOfBuilding() {
         return typeOfBuilding;
     }
 
-    public void setTypeOfBuilding(TypeOfBuilding typeOfBuilding) {
+    public void setTypeOfBuilding(Integer typeOfBuilding) {
         this.typeOfBuilding = typeOfBuilding;
     }
 
-    public long getAdditionalRent() {
+    public Long getAdditionalRent() {
         return additionalRent;
     }
 
-    public void setAdditionalRent(long additionalRent) {
+    public void setAdditionalRent(Long additionalRent) {
         this.additionalRent = additionalRent;
     }
 
-    public int getArea() {
+    public Integer getArea() {
         return area;
     }
 
-    public void setArea(int area) {
+    public void setArea(Integer area) {
         this.area = area;
     }
 
@@ -166,6 +156,14 @@ public class Announcement {
         this.sellerUid = sellerUid;
     }
 
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
     public List<String> getImageLinks() {
         return imageLinks;
     }
@@ -174,35 +172,35 @@ public class Announcement {
         this.imageLinks = imageLinks;
     }
 
-    public AnnouncementStatus getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(AnnouncementStatus status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
-    public int getYearOfBuilding() {
+    public Integer getYearOfBuilding() {
         return yearOfBuilding;
     }
 
-    public void setYearOfBuilding(int yearOfBuilding) {
+    public void setYearOfBuilding(Integer yearOfBuilding) {
         this.yearOfBuilding = yearOfBuilding;
     }
 
-    public AnnouncementMarket getMarket() {
+    public Integer getMarket() {
         return market;
     }
 
-    public void setMarket(AnnouncementMarket market) {
+    public void setMarket(Integer market) {
         this.market = market;
     }
 
-    public AnnouncementAdditionalArea getAdditionalArea() {
+    public Integer getAdditionalArea() {
         return additionalArea;
     }
 
-    public void setAdditionalArea(AnnouncementAdditionalArea additionalArea) {
+    public void setAdditionalArea(Integer additionalArea) {
         this.additionalArea = additionalArea;
     }
 }
