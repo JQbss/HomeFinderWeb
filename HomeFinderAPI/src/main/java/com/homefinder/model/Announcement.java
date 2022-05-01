@@ -9,6 +9,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @JsonInclude(NON_NULL)
 public class Announcement {
     private String Uid;
+    private Address address;
     private Integer type;
     private Integer category;
     private String title;
@@ -34,6 +35,14 @@ public class Announcement {
 
     public Announcement() {
 
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public String getUid() {

@@ -7,10 +7,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.homefinder.Util.CRUDUtil;
 import com.homefinder.model.User;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 
 @Service
 @EnableAsync
@@ -36,8 +38,8 @@ public class UserService {
         return newUserRecord;
     }
 
-    public CompletableFuture<String> findAll(int page, int limit) {
-        return CRUDUtil.findAll(userRef,page,limit);
+    public CompletableFuture<String> findAll(int page, int limit, String orderBy) {
+        return CRUDUtil.findAll(userRef,page,limit,orderBy);
     }
 
     public CompletableFuture<String> getOne(String id) {
@@ -46,5 +48,10 @@ public class UserService {
 
     public void deleteById(String id) throws FirebaseAuthException {
         firebaseAuth.deleteUser(id);
+    }
+
+    @Async
+    public CompletableFuture<String> numberOfElement() {
+        return CRUDUtil.numberOfElement(userRef);
     }
 }

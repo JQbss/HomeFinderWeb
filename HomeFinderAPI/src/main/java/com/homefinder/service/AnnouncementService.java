@@ -10,6 +10,7 @@ import com.homefinder.model.Announcement;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
 
 import java.util.List;
 import java.util.Map;
@@ -82,12 +83,20 @@ public class AnnouncementService{
     }
 
     @Async
-    public CompletableFuture<String> getAll(int page, int limit) {
-        return CRUDUtil.findAll(announcementRef,page,limit);
+    public CompletableFuture<String> getAll(int page, int limit, String orderBy, Map<String, Object> filters) {
+        if(!filters.isEmpty()){
+            return CRUDUtil.findAllWithFilter(announcementRef,page,limit,orderBy,filters);
+        }
+        return CRUDUtil.findAll(announcementRef,page,limit,orderBy);
     }
 
     @Async
     public CompletableFuture<String> getOne(String id) {
        return CRUDUtil.getOne(announcementRef,id);
+    }
+
+    @Async
+    public CompletableFuture<String> numberOfElement() {
+        return CRUDUtil.numberOfElement(announcementRef);
     }
 }

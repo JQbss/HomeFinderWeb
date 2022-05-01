@@ -5,12 +5,15 @@ import com.homefinder.model.Announcement;
 import com.homefinder.service.AnnouncementService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/announcement")
@@ -36,6 +39,7 @@ public class AnnouncementController {
         announcementService.add(announcement);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
     @RequestMapping(method = RequestMethod.PATCH,path = "/{id}", produces = "application/json;charset=utf-8")
     public ResponseEntity<?> patchAnnouncement(@PathVariable String id, @RequestBody Announcement announcement) {
         announcementService.patch(id,announcement);
@@ -52,9 +56,32 @@ public class AnnouncementController {
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     public DeferredResult<ResponseEntity<String>> all(@RequestParam(value = "page", defaultValue = "0") int page,
-                                                      @RequestParam(value = "limit", defaultValue = "25") int limit){
+                                                      @RequestParam(value = "limit", defaultValue = "25") int limit,
+                                                      @RequestParam(value = "orderBy", defaultValue = "uid") String orderBy,
+                                                      @RequestParam MultiValueMap<String, Object> filter){
         DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
-        this.announcementService.getAll(page,limit).whenComplete((serviceResult, throwable) ->
+        Map<String, Object> filters = new HashMap<>();
+        if(!filter.isEmpty()) {
+            filter.get("filter").forEach(el -> {
+                String[] tab = el.toString().split(":");
+                if (tab.length > 2) {
+                    String range = tab[1]+":"+tab[2];
+                    filters.put(tab[0], range);
+                } else {
+                    filters.put(tab[0], tab[1]);
+                }
+            });
+        }
+
+        this.announcementService.getAll(page,limit,orderBy,filters).whenComplete((serviceResult, throwable) ->
+                result.setResult(ResponseEntity.ok(serviceResult)));
+        return result;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/size", produces = "application/json;charset=utf-8")
+    public DeferredResult<ResponseEntity<String>> numberOfElement(){
+        DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
+        this.announcementService.numberOfElement().whenComplete((serviceResult, throwable) ->
                 result.setResult(ResponseEntity.ok(serviceResult)));
         return result;
     }

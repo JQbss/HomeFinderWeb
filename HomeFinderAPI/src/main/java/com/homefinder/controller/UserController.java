@@ -33,9 +33,10 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.GET)
     public DeferredResult<ResponseEntity<String>> all(@RequestParam(value = "page", defaultValue = "0") int page,
-                                                      @RequestParam(value = "limit", defaultValue = "25") int limit){
+                                                      @RequestParam(value = "limit", defaultValue = "25") int limit,
+                                                      @RequestParam(value = "orderBy", defaultValue = "uid") String orderBy){
         DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
-        this.userService.findAll(page,limit).whenComplete((serviceResult, throwable) ->
+        this.userService.findAll(page,limit,orderBy).whenComplete((serviceResult, throwable) ->
                 result.setResult(ResponseEntity.ok(serviceResult)));
         return result;
     }
@@ -44,6 +45,13 @@ public class UserController {
     public DeferredResult<ResponseEntity<String>> getOne(@PathVariable String id){
         DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
         this.userService.getOne(id).whenComplete((serviceResult, throwable) ->
+                result.setResult(ResponseEntity.ok(serviceResult)));
+        return result;
+    }
+    @RequestMapping(method = RequestMethod.GET, path = "/size", produces = "application/json;charset=utf-8")
+    public DeferredResult<ResponseEntity<String>> numberOfElement(){
+        DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
+        this.userService.numberOfElement().whenComplete((serviceResult, throwable) ->
                 result.setResult(ResponseEntity.ok(serviceResult)));
         return result;
     }
