@@ -10,7 +10,7 @@ public class Address {
     private String numer_domu;
     private String numer_mieszkania;
 
-    Address(){ }
+    public Address(){ }
 
     public String getWojewodztwo() {
         return wojewodztwo;
