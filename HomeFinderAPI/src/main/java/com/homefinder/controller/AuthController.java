@@ -73,18 +73,18 @@ public class AuthController {
         return ResponseEntity.ok(userPrincipal);
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/token")
-    public Map<String, String> refreshToken() throws FirebaseAuthException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-
-        //joining elements of collections as comma seperated string
-        String authorities = authentication.getAuthorities()
-                .stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
-        System.out.println(authorities);
-        String customToken = firebaseAuth.createCustomToken("test", Collections.singletonMap("authorities", authorities));
-        return Collections.singletonMap("token", customToken);
-    }
+//    @RequestMapping(method = RequestMethod.GET, path = "/token")
+//    public Map<String, String> refreshToken() throws FirebaseAuthException {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String username = authentication.getName();
+//
+//        //joining elements of collections as comma seperated string
+//        String authorities = authentication.getAuthorities()
+//                .stream()
+//                .map(GrantedAuthority::getAuthority)
+//                .collect(Collectors.joining(","));
+//        System.out.println(authorities);
+//        String customToken = firebaseAuth.createCustomToken("test", Collections.singletonMap("authorities", authorities));
+//        return Collections.singletonMap("token", customToken);
+//    }
 }

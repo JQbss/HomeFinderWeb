@@ -61,7 +61,7 @@ public class AnnouncementController {
                                                       @RequestParam MultiValueMap<String, Object> filter){
         DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
         Map<String, Object> filters = new HashMap<>();
-        if(!filter.isEmpty()) {
+        if(!filter.isEmpty() && filter.containsKey("filter")) {
             filter.get("filter").forEach(el -> {
                 String[] tab = el.toString().split(":");
                 if (tab.length > 2) {
