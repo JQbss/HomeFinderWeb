@@ -1,10 +1,9 @@
 package com.homefinder.controller;
 
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.UserRecord;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.homefinder.model.User;
 import com.homefinder.service.UserService;
 import org.springframework.http.HttpEntity;
@@ -12,25 +11,29 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.nio.file.attribute.UserPrincipal;
+import java.util.Collections;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
 @RequestMapping("/auth")
 public class AuthController {
-   final UserService userService;
+    final UserService userService;
+    private final FirebaseAuth firebaseAuth;
+
     Authentication authentication;
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, FirebaseAuth firebaseAuth) {
         this.userService = userService;
+        this.firebaseAuth = firebaseAuth;
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/register")
@@ -67,8 +70,21 @@ public class AuthController {
         if (principal instanceof User) {
             userPrincipal = ((User) principal);
         }
-        System.out.println(userPrincipal);
         return ResponseEntity.ok(userPrincipal);
     }
 
+    @RequestMapping(method = RequestMethod.GET, path = "/token")
+    public Map<String, String> refreshToken() throws FirebaseAuthException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        //joining elements of collections as comma seperated string
+        String authorities = authentication.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+        System.out.println(authorities);
+        String customToken = firebaseAuth.createCustomToken("test", Collections.singletonMap("authorities", authorities));
+        return Collections.singletonMap("token", customToken);
+    }
 }

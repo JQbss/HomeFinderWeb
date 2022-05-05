@@ -46,7 +46,7 @@ public class CRUDUtil {
                 map.put("items",listOfObject);
                 map.put("totalItems",currentIndex);
                 int totalNumOfPge = currentIndex/limit;
-                map.put("totalPage", totalNumOfPge);
+                map.put("totalPages", totalNumOfPge);
                 map.put("currentPage", page);
                 map.put("limit",limit);
                 listOfObject2.add(map);
@@ -120,9 +120,9 @@ public class CRUDUtil {
                 List<Map<Object, Object>> listOfObject2 = new ArrayList<>();
                 Map<Object, Object> map = new HashMap<>();
                 map.put("items",listOfObject);
-                map.put("totalItems",currentIndex);
+                map.put("totalItems", currentIndex);
                 int totalNumOfPge = currentIndex/limit;
-                map.put("totalPage", totalNumOfPge);
+                map.put("totalPages", totalNumOfPge);
                 map.put("currentPage", page);
                 map.put("limit",limit);
                 listOfObject2.add(map);
