@@ -1,6 +1,7 @@
 package com.homefinder.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class User implements Serializable {
     private String username;
@@ -11,9 +12,11 @@ public class User implements Serializable {
     private String lastName;
     private String Uid;
     private Role role;
+    private Address address;
+    private List<Announcement> favorite;
     private boolean EmailVerified;
 
-    public User(String username, String email, String password, String phoneNumber, String firstName, String lastName, String uid, Role role, boolean emailVerified) {
+    public User(String username, String email, String password, String phoneNumber, String firstName, String lastName, String uid, Role role, Address address, List<Announcement> favorite, boolean emailVerified) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -22,10 +25,28 @@ public class User implements Serializable {
         this.lastName = lastName;
         Uid = uid;
         this.role = role;
+        this.address = address;
+        this.favorite = favorite;
         EmailVerified = emailVerified;
     }
 
     public User() {
+    }
+
+    public List<Announcement> getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(List<Announcement> favorite) {
+        this.favorite = favorite;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public Role getRole() {
@@ -98,5 +119,22 @@ public class User implements Serializable {
 
     public void setUid(String uid) {
         Uid = uid;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", Uid='" + Uid + '\'' +
+                ", role=" + role +
+                ", address=" + address +
+                ", favorite=" + favorite +
+                ", EmailVerified=" + EmailVerified +
+                '}';
     }
 }

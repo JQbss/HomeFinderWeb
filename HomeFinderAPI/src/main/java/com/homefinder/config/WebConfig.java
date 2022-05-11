@@ -6,6 +6,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
+
 //link do dokumentacji http://localhost:8080/swagger-ui/index.html
 @Configuration
 @EnableWebMvc

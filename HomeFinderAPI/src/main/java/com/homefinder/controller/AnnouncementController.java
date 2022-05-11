@@ -48,7 +48,7 @@ public class AnnouncementController {
 
     @RequestMapping(method = RequestMethod.PUT, path = "/{id}", produces = "application/json;charset=utf-8")
     public ResponseEntity<?> updateAnnouncement(@PathVariable String id, @RequestBody Announcement announcement) {
-        if(announcementService.update(id,announcement) == 201){
+        if(announcementService.update(id,announcement) == 201) {
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
         return new ResponseEntity<>(HttpStatus.OK);
@@ -78,18 +78,11 @@ public class AnnouncementController {
         return result;
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/size", produces = "application/json;charset=utf-8")
-    public DeferredResult<ResponseEntity<String>> numberOfElement(){
-        DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
-        this.announcementService.numberOfElement().whenComplete((serviceResult, throwable) ->
-                result.setResult(ResponseEntity.ok(serviceResult)));
-        return result;
-    }
 
     @RequestMapping(method = RequestMethod.GET, path = "/{id}", produces = "application/json;charset=utf-8")
     public DeferredResult<ResponseEntity<?>> getOne(@PathVariable String id) {
         DeferredResult<ResponseEntity<?>> result = new DeferredResult<>();
-        this.announcementService.getOne(id).whenComplete((serviceResult, throwable) ->{
+        this.announcementService.getOne(id).whenComplete((serviceResult, throwable) -> {
             if(serviceResult == null){
                 result.setResult(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
             }

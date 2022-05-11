@@ -3,6 +3,7 @@ package com.homefinder.controller;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.homefinder.model.User;
 import com.homefinder.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -48,17 +49,20 @@ public class UserController {
                 result.setResult(ResponseEntity.ok(serviceResult)));
         return result;
     }
-    @RequestMapping(method = RequestMethod.GET, path = "/size", produces = "application/json;charset=utf-8")
-    public DeferredResult<ResponseEntity<String>> numberOfElement(){
-        DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
-        this.userService.numberOfElement().whenComplete((serviceResult, throwable) ->
-                result.setResult(ResponseEntity.ok(serviceResult)));
-        return result;
-    }
 
     @RequestMapping(method = RequestMethod.DELETE,path = "/{id}")
     void deleteEmployee(@PathVariable String id) throws FirebaseAuthException {
         userService.deleteById(id);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/announcement/favorite/{id}")
+    ResponseEntity<?> addAnnouncementToFavorite(@PathVariable String id) {
+        userService.addToFavorite(id);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+    @RequestMapping(method = RequestMethod.GET, path = "/announcement/favorite")
+    ResponseEntity<?> favoriteAnnouncement() {
+        return ResponseEntity.ok(userService.getFavorite());
     }
 
 }

@@ -140,32 +140,6 @@ public class CRUDUtil {
             finally { return allJSON[0];}
         });
     }
-    public static CompletableFuture<String> numberOfElement(DatabaseReference ref){
-        final String[] allJSON = new String[1];
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Object document = dataSnapshot.getValue();
-                int currentIndex = 0;
-                List<Map<Object, Object>> listOfObject = new ArrayList<>();
-                for (Object key : ((HashMap) document).keySet()) {
-                    if (key instanceof String) {
-                        currentIndex++;
-                    }
-                }
-                allJSON[0] = new Gson().toJson(currentIndex);
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-            }
-        });
-        return CompletableFuture.supplyAsync( () ->{
-            try { TimeUnit.SECONDS.sleep(waitTime); }
-            catch (Exception io){ throw new RuntimeException(io); }
-            finally { return allJSON[0];}
-        });
-    }
 
     public static CompletableFuture<String> getOne(DatabaseReference ref, String id){
         final String[] getOne = {null};

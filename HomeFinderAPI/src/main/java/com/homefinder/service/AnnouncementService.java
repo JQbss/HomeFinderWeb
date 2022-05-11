@@ -95,8 +95,4 @@ public class AnnouncementService{
        return CRUDUtil.getOne(announcementRef,id);
     }
 
-    @Async
-    public CompletableFuture<String> numberOfElement() {
-        return CRUDUtil.numberOfElement(announcementRef);
-    }
 }
