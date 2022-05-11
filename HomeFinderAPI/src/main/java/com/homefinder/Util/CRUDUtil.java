@@ -104,7 +104,9 @@ public class CRUDUtil {
                             }
                             map.put(kv, ((HashMap)data).get(kv));
                         }
-                        if(!isContains.contains(false) && numOfFilters>0) {
+
+                        if((!isContains.contains(false) && numOfFilters>0) ||
+                                (filters.get("uid")!=null && ((ArrayList)filters.get("uid")).contains(map.get("uid")))) {
                             currentIndex++;
                             listOfObject.add(map);
                         }

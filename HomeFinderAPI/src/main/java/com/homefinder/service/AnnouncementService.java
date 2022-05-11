@@ -83,7 +83,7 @@ public class AnnouncementService{
 
     @Async
     public CompletableFuture<String> getAll(int page, int limit, String orderBy, Map<String, Object> filters) {
-        if(!filters.isEmpty()){
+        if(filters!=null && !filters.isEmpty()){
             return CRUDUtil.findAllWithFilter(announcementRef,page,limit,orderBy,filters);
         }
         return CRUDUtil.findAll(announcementRef,page,limit,orderBy);

@@ -1,6 +1,5 @@
 package com.homefinder.service;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuth;
@@ -9,10 +8,8 @@ import com.google.firebase.auth.UserRecord;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.homefinder.Util.CRUDUtil;
-import com.homefinder.model.Announcement;
 import com.homefinder.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
@@ -22,7 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.*;
 
 @Service
 @EnableAsync
@@ -100,47 +97,35 @@ public class UserService {
 
     public void addToFavorite(String id) {
         userRef.child(authService.getUser().getUid()).child("favorites").push().setValueAsync(id);
-////        ObjectMapper oMapper = new ObjectMapper();
-////        getOne(uid).whenComplete((serviceResult, throwable) -> {
-////            //user[0] = oMapper.convertValue(serviceResult, User.class);
-////            System.out.println("ELOOOO");
-////            System.out.println(serviceResult);
-////            //System.out.println(user[0].getFavorite().toString());
-////        });
-////
-////        System.out.println("ELOOOO345345");
-////        List<String> favorite = user[0].getFavorite();
-////        if(favorite == null) {
-////            favorite = new ArrayList<>();
-////        }
-////        favorite.add(id);
-////        user[0].setFavorite(favorite);
-////        patch(user[0].getUid(), user[0]);
     }
 
-    public void getFavorite(String uid) {
-
-        getOne(uid).whenComplete((serviceResult, throwable) -> {
-            ObjectMapper oMapper = new ObjectMapper();
-            System.out.println("ELOOOO");
+    public String getFavorite(String uid) throws ExecutionException, InterruptedException {
+        final CompletableFuture<String>[] completableFuture2 = new CompletableFuture[]{new CompletableFuture<>()};
+        Executors.newCachedThreadPool().submit(() -> {
             try {
-                Map<String, Object> users = oMapper.readValue(serviceResult, Map.class);
-                System.out.println(users.toString());
-                Map<String, Object> fav = oMapper.convertValue(users.get("favorites"), Map.class);
-                Map<String,String> fid = new HashMap<>();
-
-                for (var key:fav.keySet()) {
-                    fid.put("uid",fav.get(key).toString());
-                }
-                var el = announcementRef.child(fid.get(0));
-                System.out.println(el);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
+            getOne(uid).whenComplete((serviceResult, throwable) -> {
+                ObjectMapper oMapper = new ObjectMapper();
+                try {
+                    Map<String, Object> users = oMapper.readValue(serviceResult, Map.class);
+                    Map<String, Object> fav = oMapper.convertValue(users.get("favorites"), Map.class);
+                    Map<String, Object> fid = new HashMap<>();
+                    List<String> listFid = new ArrayList<>();
+                    for (var key : fav.keySet()) {
+                        listFid.add(fav.get(key).toString());
+                    }
+                    fid.put("uid", listFid);
+                    completableFuture2[0].complete(announcementService.getAll(0, 25, "uid", fid).get());
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                } catch (IOException | InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
+            });
         });
-        //userRef.child().child("favorites");
+        return completableFuture2[0].get();
     }
 }

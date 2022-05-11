@@ -13,6 +13,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/users")
@@ -66,10 +67,13 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
     @RequestMapping(method = RequestMethod.GET, path = "/announcement/favorite")
-    ResponseEntity<?> favoriteAnnouncement() {
-        //authService.getUser().getUid()
-        userService.getFavorite(authService.getUser().getUid());
-        return ResponseEntity.ok(HttpStatus.OK);
+    ResponseEntity<String> favoriteAnnouncement() throws ExecutionException, InterruptedException {
+//        //authService.getUser().getUid()
+//        DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
+//        userService.getFavorite(authService.getUser().getUid()).whenComplete((serviceResult, throwable) ->
+//                result.setResult(ResponseEntity.ok(serviceResult)));
+//        return result;
+        return  ResponseEntity.ok(userService.getFavorite(authService.getUser().getUid()));
     }
     @RequestMapping(method = RequestMethod.PATCH,path = "/{id}", produces = "application/json;charset=utf-8")
     public ResponseEntity<?> patchAnnouncement(@PathVariable String id, @RequestBody User user) {
