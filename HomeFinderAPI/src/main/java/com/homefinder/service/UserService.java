@@ -87,7 +87,7 @@ public class UserService {
         });
     }
     public int update(String id, User user) throws FirebaseAuthException {
-        if(announcementRef.child(id)==null){
+        if(announcementRef.child(id)==null) {
             addUser(user);
             return 201;
         }

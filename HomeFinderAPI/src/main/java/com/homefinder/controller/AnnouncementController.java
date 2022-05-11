@@ -3,6 +3,7 @@ package com.homefinder.controller;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.homefinder.model.Announcement;
 import com.homefinder.service.AnnouncementService;
+import com.homefinder.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
@@ -19,9 +20,11 @@ import java.util.Map;
 @RequestMapping("/announcement")
 public class AnnouncementController {
     final AnnouncementService announcementService;
+    final AuthService authService;
 
-    public AnnouncementController(AnnouncementService announcementService) {
+    public AnnouncementController(AnnouncementService announcementService, AuthService authService) {
         this.announcementService = announcementService;
+        this.authService = authService;
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/json;charset=utf-8")
@@ -99,5 +102,13 @@ public class AnnouncementController {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
+    @RequestMapping(method = RequestMethod.GET, path = "/mine")
+    DeferredResult<ResponseEntity<String>> getMine() {
+        Map<String, Object> fid = new HashMap<>();
+        fid.put("sellerUid",authService.getUser().getUid());
+        DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
+        this.announcementService.getAll(0,25,"uid",fid).whenComplete((serviceResult, throwable) ->
+                result.setResult(ResponseEntity.ok(serviceResult)));
+        return result;
+    }
 }

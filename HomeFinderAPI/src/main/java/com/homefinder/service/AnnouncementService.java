@@ -30,6 +30,7 @@ public class AnnouncementService{
         announcementRef= ref.child("announcement");
     }
     public void add(Announcement announcement){
+        announcement.setSellerUid(authService.getUser().getUid());
         announcementRef.push().setValueAsync(announcement);
     }
 
