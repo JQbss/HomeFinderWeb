@@ -1,6 +1,7 @@
 package com.homefinder.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.util.List;
@@ -17,7 +18,8 @@ public class User implements Serializable {
     private String Uid;
     private Role role;
     private Address address;
-    private List<String> favorite;
+    @JsonProperty
+    private List<String> favorites;
     private boolean EmailVerified;
 
     public User(String username, String email, String phoneNumber, String firstName, String lastName, String uid, Role role, Address address, List<String> favorite, boolean emailVerified) {
@@ -29,7 +31,7 @@ public class User implements Serializable {
         Uid = uid;
         this.role = role;
         this.address = address;
-        this.favorite = favorite;
+        this.favorites = favorite;
         EmailVerified = emailVerified;
     }
 
@@ -37,11 +39,11 @@ public class User implements Serializable {
     }
 
     public List<String> getFavorite() {
-        return favorite;
+        return favorites;
     }
 
     public void setFavorite(List<String> favorite) {
-        this.favorite = favorite;
+        this.favorites = favorite;
     }
 
     public Address getAddress() {
@@ -117,19 +119,4 @@ public class User implements Serializable {
         Uid = uid;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", Uid='" + Uid + '\'' +
-                ", role=" + role +
-                ", address=" + address +
-                ", favorite=" + favorite +
-                ", EmailVerified=" + EmailVerified +
-                '}';
-    }
 }

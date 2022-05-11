@@ -1,11 +1,13 @@
 package com.homefinder.controller;
 
 import com.google.firebase.auth.FirebaseAuthException;
+import com.homefinder.model.Announcement;
 import com.homefinder.model.User;
+import com.homefinder.service.AuthService;
 import com.homefinder.service.UserService;
+import org.apache.http.protocol.HTTP;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -17,9 +19,11 @@ import java.net.URI;
 public class UserController {
 
     final UserService userService;
+    final AuthService authService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, AuthService authService) {
         this.userService = userService;
+        this.authService = authService;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -57,12 +61,27 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST, path = "/announcement/favorite/{id}")
     ResponseEntity<?> addAnnouncementToFavorite(@PathVariable String id) {
+
         userService.addToFavorite(id);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
     @RequestMapping(method = RequestMethod.GET, path = "/announcement/favorite")
     ResponseEntity<?> favoriteAnnouncement() {
-        return ResponseEntity.ok(userService.getFavorite());
+        //authService.getUser().getUid()
+        userService.getFavorite(authService.getUser().getUid());
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+    @RequestMapping(method = RequestMethod.PATCH,path = "/{id}", produces = "application/json;charset=utf-8")
+    public ResponseEntity<?> patchAnnouncement(@PathVariable String id, @RequestBody User user) {
+        userService.patch(id,user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @RequestMapping(method = RequestMethod.PUT, path = "/{id}", produces = "application/json;charset=utf-8")
+    public ResponseEntity<?> updateAnnouncement(@PathVariable String id, @RequestBody User user) throws FirebaseAuthException {
+        if(userService.update(id,user) == 201) {
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

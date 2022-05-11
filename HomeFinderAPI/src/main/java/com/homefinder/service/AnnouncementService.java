@@ -29,7 +29,6 @@ public class AnnouncementService{
         DatabaseReference ref = firebaseDatabase.getReference();
         announcementRef= ref.child("announcement");
     }
-
     public void add(Announcement announcement){
         announcementRef.push().setValueAsync(announcement);
     }
