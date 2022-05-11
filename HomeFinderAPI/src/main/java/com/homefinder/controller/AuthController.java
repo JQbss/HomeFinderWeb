@@ -1,17 +1,16 @@
 package com.homefinder.controller;
 
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.gson.JsonObject;
+import com.homefinder.dto.LoginRequest;
 import com.homefinder.model.User;
+import com.homefinder.service.AuthService;
 import com.homefinder.service.UserService;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -19,21 +18,16 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Collections;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
 @RequestMapping("/auth")
 public class AuthController {
     final UserService userService;
-    private final FirebaseAuth firebaseAuth;
-
-    Authentication authentication;
-    public AuthController(UserService userService, FirebaseAuth firebaseAuth) {
+    final AuthService authService;
+    public AuthController(UserService userService, AuthService authService) {
         this.userService = userService;
-        this.firebaseAuth = firebaseAuth;
+        this.authService = authService;
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/register")
@@ -47,14 +41,14 @@ public class AuthController {
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/login")
-    public String login(@RequestBody User user){
+    public String login(@RequestBody LoginRequest loginRequest) {
         String uri ="https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDGoLjxXsnTNhwu9WrHOheIeZUdyG224Zc";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         JsonObject properties = new JsonObject();
-        properties.addProperty("email", user.getEmail());
-        properties.addProperty("password", user.getPassword());
+        properties.addProperty("email", loginRequest.getEmail());
+        properties.addProperty("password", loginRequest.getPassword());
         properties.addProperty("returnSecureToken", true);
         HttpEntity<String> request = new HttpEntity<>(properties.toString(), headers);
 
@@ -64,13 +58,7 @@ public class AuthController {
 
     @RequestMapping(method = RequestMethod.GET, path = "/user-details")
     public ResponseEntity<User> getUserInfo() {
-        User userPrincipal = null;
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        Object principal = securityContext.getAuthentication().getPrincipal();
-        if (principal instanceof User) {
-            userPrincipal = ((User) principal);
-        }
-        return ResponseEntity.ok(userPrincipal);
+        return ResponseEntity.ok(authService.getUser());
     }
 
 //    @RequestMapping(method = RequestMethod.GET, path = "/token")

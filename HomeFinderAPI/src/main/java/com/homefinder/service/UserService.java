@@ -42,7 +42,7 @@ public class UserService {
     }
 
     public UserRecord addUser(User user) throws FirebaseAuthException {
-        UserRecord newUserRecord = firebaseAuth.createUser(new UserRecord.CreateRequest().setEmail(user.getEmail()).setPassword(user.getPassword()));
+        UserRecord newUserRecord = firebaseAuth.createUser(new UserRecord.CreateRequest().setEmail(user.getEmail()));
         User newUser= new User();
         newUser.setEmail(newUserRecord.getEmail());
         userRef.child(newUserRecord.getUid()).setValueAsync(newUser);
@@ -87,13 +87,22 @@ public class UserService {
 
     @Async
     public void addToFavorite(String id) {
-        User user = authService.getUser();
-        List<Announcement> favorite = user.getFavorite();
-        if(favorite == null){
-            favorite = new ArrayList<>();
-        }
-        user.setFavorite(favorite);
-        patch(user.getUid(),user);
+//        final User[] user = new User[1];
+        System.out.println(authService.getUser().getUid());
+//        ObjectMapper oMapper = new ObjectMapper();
+//        getOne(authService.getUser().getUid()).whenComplete((serviceResult, throwable) -> {
+//            user[0] = oMapper.convertValue(serviceResult, User.class);
+//            System.out.println("ELOOOO");
+//            System.out.println(user[0].getFavorite().toString());
+//        });
+        System.out.println("ELOOOO345345");
+//        List<String> favorite = user[0].getFavorite();
+//        if(favorite == null) {
+//            favorite = new ArrayList<>();
+//        }
+//        favorite.add(id);
+//        user[0].setFavorite(favorite);
+//        patch(user[0].getUid(), user[0]);
     }
 
     public CompletableFuture<String> getFavorite() {
