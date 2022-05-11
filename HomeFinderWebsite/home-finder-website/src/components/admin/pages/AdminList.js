@@ -3,51 +3,70 @@ import { Oval } from "react-loader-spinner";
 import { useParams } from "react-router";
 import FetchManager from "../../../classes/FetchManager";
 import ButtonStandart from "../../small-elements/ButtonStandart";
+import { entities } from "../config/entities";
 
 const AdminList = (props) => {
   const { entity } = useParams();
-  const [data, setData] = useState();
+  const [fields, setFields] = useState([]);
+  const [headers, setHeaders] = useState([]);
 
   useEffect(() => {
     FetchManager.GetMany(entity).then((response) => {
-      response = response.flatMap((el) => Array(10).fill(el)); //TODO remove when will be more data
-      setData(response);
-      console.log(response);
+      FieldGenerator(response[0].items);
     });
   }, []);
+
+  const FieldGenerator = (data) => {
+    let _fieldsValues = [];
+    const _elements = [];
+
+    data?.map((el) => {
+      _fieldsValues = [];
+      entities[entity]?.list.map((fieldName) => {
+        if (fieldName instanceof Object) {
+          Object.values(fieldName).map((sub) => {
+            _fieldsValues.push(el[Object.keys(fieldName)?.[0]]?.[sub]);
+          });
+        } else _fieldsValues.push(el[fieldName]);
+      });
+      _elements.push(TableElement(_fieldsValues));
+    });
+    setFields(_elements);
+
+    setHeaders(TableHeader(entities[entity]?.listLabels));
+  };
 
   const TableElement = (props) => {
     return (
       <tr>
-        <th scope="row">{props.uid}</th>
-        <td>{props.name}</td>
-        <td>{props.localization}</td>
-        <td>{props.price}</td>
-        <td>
-          <ButtonStandart href="#" label="Edytuj" type={1} />
-        </td>
+        {props?.map((field) => (
+          <td>{field}</td>
+        ))}
+        {entities[entity]?.edit && (
+          <td>
+            <ButtonStandart href="#" label="Edytuj" type={1} />
+          </td>
+        )}
       </tr>
     );
   };
 
-  return data ? (
+  const TableHeader = (props) => {
+    return (
+      <tr>
+        {props?.map((field) => (
+          <th>{field}</th>
+        ))}
+      </tr>
+    );
+  };
+
+  return fields ? (
     <div className="admin-list-container">
       <div className="w-75">
         <table class="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col">id</th>
-              <th scope="col">Nazwa</th>
-              <th scope="col">Miejscowość</th>
-              <th scope="col">Cena, zł</th>
-              <th scope="col">Akcję</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((el) => (
-              <TableElement {...el} />
-            ))}
-          </tbody>
+          <thead>{headers}</thead>
+          <tbody>{fields}</tbody>
         </table>
       </div>
     </div>
