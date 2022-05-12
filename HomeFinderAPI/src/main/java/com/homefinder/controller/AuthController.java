@@ -7,10 +7,7 @@ import com.homefinder.dto.LoginRequest;
 import com.homefinder.model.User;
 import com.homefinder.service.AuthService;
 import com.homefinder.service.UserService;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -31,13 +28,9 @@ public class AuthController {
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/register")
-    public ResponseEntity<User> createUser(@RequestBody User user) throws FirebaseAuthException {
-        userService.addUser(user);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(user.getUid())
-                .toUri();
-        return ResponseEntity.created(location).build();
+    public ResponseEntity<?> createUser(@RequestBody LoginRequest loginRequest) throws FirebaseAuthException {
+        userService.addUser(loginRequest);
+        return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/login")

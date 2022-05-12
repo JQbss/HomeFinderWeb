@@ -1,6 +1,7 @@
 package com.homefinder.controller;
 
 import com.google.firebase.auth.FirebaseAuthException;
+import com.homefinder.dto.LoginRequest;
 import com.homefinder.model.Announcement;
 import com.homefinder.model.User;
 import com.homefinder.service.AuthService;
@@ -28,13 +29,9 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<User> createUser(@RequestBody User user) throws FirebaseAuthException {
-        userService.addUser(user);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(user.getUid())
-                .toUri();
-        return ResponseEntity.created(location).build();
+    public ResponseEntity<?> createUser(@RequestBody LoginRequest loginRequest) throws FirebaseAuthException {
+        userService.addUser(loginRequest);
+        return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
     @RequestMapping(method = RequestMethod.GET)
