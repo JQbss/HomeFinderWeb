@@ -8,6 +8,7 @@ import com.google.firebase.auth.UserRecord;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.homefinder.Util.CRUDUtil;
+import com.homefinder.dto.LoginRequest;
 import com.homefinder.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -42,8 +43,8 @@ public class UserService {
         announcementRef = ref.child("announcement");
     }
 
-    public UserRecord addUser(User user) throws FirebaseAuthException {
-        UserRecord newUserRecord = firebaseAuth.createUser(new UserRecord.CreateRequest().setEmail(user.getEmail()));
+    public UserRecord addUser(LoginRequest loginRequest) throws FirebaseAuthException {
+        UserRecord newUserRecord = firebaseAuth.createUser(new UserRecord.CreateRequest().setEmail(loginRequest.getEmail()).setPassword(loginRequest.getPassword()));
         User newUser= new User();
         newUser.setEmail(newUserRecord.getEmail());
         userRef.child(newUserRecord.getUid()).setValueAsync(newUser);
@@ -86,11 +87,12 @@ public class UserService {
             }
         });
     }
+
     public int update(String id, User user) throws FirebaseAuthException {
-        if(announcementRef.child(id)==null) {
-            addUser(user);
-            return 201;
-        }
+//        if(announcementRef.child(id)==null) {
+//            addUser(user);
+//            return 201;
+//        }
         announcementRef.child(id).push().setValueAsync(user);
         return 200;
     }
