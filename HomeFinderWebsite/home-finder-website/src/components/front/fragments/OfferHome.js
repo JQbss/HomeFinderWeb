@@ -73,6 +73,7 @@ const OfferHome = (props) => {
           onMouseEnter={blurBg}
           onMouseLeave={unBlurBg}
         >
+          {props.title && <span>{props.title}</span>}
           <span>Cena: {props.price ? props.price : "-"} zł</span>
           <span>Rozpoznane umeblowanie:</span>
           <div className="offer-home-info-list">
