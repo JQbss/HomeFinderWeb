@@ -3,10 +3,7 @@ package com.homefinder.Util;
 import com.google.firebase.database.*;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -101,6 +98,20 @@ public class CRUDUtil {
                                     isContains.add(false);
                                 }
                                 numOfFilters++;
+                            }
+                            else if(filters.toString().contains("__") && ((HashMap)data).containsKey("address")) {
+
+                                for (String el : filters.keySet()) {
+                                    if(el.contains("__")){
+                                        if (((HashMap<?, ?>) ((HashMap<?, ?>) data).get("address")).get(el.split("__")[1]).toString().contains(filters.get(el).toString())) {
+                                             isContains.add(true);
+                                        }
+                                        else {
+                                            isContains.add(false);
+                                        }
+                                        numOfFilters++;
+                                    }
+                                }
                             }
                             map.put(kv, ((HashMap)data).get(kv));
                         }

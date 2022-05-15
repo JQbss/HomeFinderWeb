@@ -10,7 +10,6 @@ import com.homefinder.model.Announcement;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
-import org.springframework.util.MultiValueMap;
 
 import java.util.List;
 import java.util.Map;

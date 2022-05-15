@@ -65,11 +65,6 @@ public class UserController {
     }
     @RequestMapping(method = RequestMethod.GET, path = "/announcement/favorite")
     ResponseEntity<String> favoriteAnnouncement() throws ExecutionException, InterruptedException {
-//        //authService.getUser().getUid()
-//        DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
-//        userService.getFavorite(authService.getUser().getUid()).whenComplete((serviceResult, throwable) ->
-//                result.setResult(ResponseEntity.ok(serviceResult)));
-//        return result;
         return  ResponseEntity.ok(userService.getFavorite(authService.getUser().getUid()));
     }
     @RequestMapping(method = RequestMethod.PATCH,path = "/{id}", produces = "application/json;charset=utf-8")
