@@ -192,6 +192,7 @@ html {
 
 .offer-home-image {
   width: 320px;
+  max-height: 240px;
   border-radius: 50px;
 }
 
