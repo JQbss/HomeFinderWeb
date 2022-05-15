@@ -35,6 +35,17 @@ class FetchManager {
         return data;
       });
   }
+
+  static async GetAddressDetails(lat,lon){
+    return fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&accept-language=pl`)
+    .then((response) => {
+      if (response.status == 200) return response.json();
+      else return "error";
+    })
+    .then((data) => {
+      return data;
+    }); 
+  }
 }
 
 export default FetchManager;
