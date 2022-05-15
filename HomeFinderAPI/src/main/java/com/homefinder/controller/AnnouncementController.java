@@ -59,7 +59,7 @@ public class AnnouncementController {
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     public DeferredResult<ResponseEntity<String>> all(@RequestParam(value = "page", defaultValue = "0") int page,
-                                                      @RequestParam(value = "limit", defaultValue = "50") int limit,
+                                                      @RequestParam(value = "limit", defaultValue = "25") int limit,
                                                       @RequestParam(value = "orderBy", defaultValue = "uid") String orderBy,
                                                       @RequestParam MultiValueMap<String, Object> filter){
         DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
