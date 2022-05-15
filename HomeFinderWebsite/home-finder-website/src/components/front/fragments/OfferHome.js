@@ -1,4 +1,15 @@
 import { useState } from "react";
+// Core modules imports are same as usual
+import SwiperCore, { Navigation, Pagination } from "swiper";
+// Direct React component imports
+import { Swiper, SwiperSlide } from "swiper/react/swiper-react.js";
+
+// Styles must use direct files imports
+import "swiper/swiper.scss"; // core Swiper
+import "swiper/modules/navigation/navigation.scss"; // Navigation module
+import "swiper/modules/pagination/pagination.scss"; // Pagination module
+
+SwiperCore.use([Navigation, Pagination]);
 
 const FurnitureObject = ({ name }) => {
   return (
@@ -28,7 +39,7 @@ const OfferHome = (props) => {
           onMouseEnter={blurBg}
           onMouseLeave={unBlurBg}
         >
-          <a href="#">
+          <a href={props.id ? `announcement/${props.id}` : "#"}>
             <div>Kliknij aby zobaczyć więcej</div>
           </a>
         </div>
@@ -38,17 +49,31 @@ const OfferHome = (props) => {
           blur ? "offer-home-blurred" : ""
         }`}
       >
-        <div>
-          <img src="/offer-template.jpg" className="offer-home-image" />
-          <br />
-          <span>Kliknij w obrazek aby powiększyć</span>
+        <div style={{ position: "relative", width: 320 }}>
+          {Array.isArray(props.img) ? (
+            <Swiper pagination={true}>
+              {props.img?.map((x, index) => (
+                <SwiperSlide key={index}>
+                  <img
+                    src={x ? x : "/house-logo-1.png"}
+                    className="offer-home-image"
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          ) : (
+            <img
+              src={props.img ? props.img : "/house-logo-1.png"}
+              className="offer-home-image"
+            />
+          )}
         </div>
         <div
           className="offer-home-info"
           onMouseEnter={blurBg}
           onMouseLeave={unBlurBg}
         >
-          <span>Ilość pokojów: 2</span>
+          <span>Cena: {props.price ? props.price : "-"} zł</span>
           <span>Rozpoznane umeblowanie:</span>
           <div className="offer-home-info-list">
             <FurnitureObject name={"Łóżko"} />

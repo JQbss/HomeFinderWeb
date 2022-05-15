@@ -45,7 +45,7 @@ const SliderHeader = () => {
               height: "48px",
               margin: "0 50px 0 0",
             }}
-            placeholder="Wpisz miasto lub kod pocztowy"
+            placeholder="Wpisz miasto"
           />
           <ButtonStandart href="#" label="SZUKAJ" />
         </div>
