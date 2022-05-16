@@ -15,6 +15,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/announcement")
@@ -61,7 +62,7 @@ public class AnnouncementController {
     public DeferredResult<ResponseEntity<String>> all(@RequestParam(value = "page", defaultValue = "0") int page,
                                                       @RequestParam(value = "limit", defaultValue = "25") int limit,
                                                       @RequestParam(value = "orderBy", defaultValue = "uid") String orderBy,
-                                                      @RequestParam MultiValueMap<String, Object> filter){
+                                                      @RequestParam MultiValueMap<String, Object> filter) throws ExecutionException, InterruptedException {
         DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
         Map<String, Object> filters = new HashMap<>();
         if(!filter.isEmpty() && filter.containsKey("filter")) {
@@ -75,7 +76,6 @@ public class AnnouncementController {
                 }
             });
         }
-
         this.announcementService.getAll(page,limit,orderBy,filters).whenComplete((serviceResult, throwable) ->
                 result.setResult(ResponseEntity.ok(serviceResult)));
         return result;
@@ -103,7 +103,7 @@ public class AnnouncementController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @RequestMapping(method = RequestMethod.GET, path = "/mine")
-    DeferredResult<ResponseEntity<String>> getMine() {
+    DeferredResult<ResponseEntity<String>> getMine() throws ExecutionException, InterruptedException {
         Map<String, Object> fid = new HashMap<>();
         fid.put("sellerUid",authService.getUser().getUid());
         DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();

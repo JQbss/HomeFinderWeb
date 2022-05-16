@@ -28,13 +28,13 @@ public class UserController {
         this.authService = authService;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     public ResponseEntity<?> createUser(@RequestBody LoginRequest loginRequest) throws FirebaseAuthException {
         userService.addUser(loginRequest);
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     public DeferredResult<ResponseEntity<String>> all(@RequestParam(value = "page", defaultValue = "0") int page,
                                                       @RequestParam(value = "limit", defaultValue = "25") int limit,
                                                       @RequestParam(value = "orderBy", defaultValue = "uid") String orderBy){
@@ -44,7 +44,7 @@ public class UserController {
         return result;
     }
 
-    @RequestMapping(method = RequestMethod.GET,path = "/{id}")
+    @RequestMapping(method = RequestMethod.GET,path = "/{id}", produces = "application/json;charset=utf-8")
     public DeferredResult<ResponseEntity<String>> getOne(@PathVariable String id){
         DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
         this.userService.getOne(id).whenComplete((serviceResult, throwable) ->
@@ -57,9 +57,8 @@ public class UserController {
         userService.deleteById(id);
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/announcement/favorite/{id}")
+    @RequestMapping(method = RequestMethod.POST, path = "/announcement/favorite/{id}",produces = "application/json;charset=utf-8")
     ResponseEntity<?> addAnnouncementToFavorite(@PathVariable String id) {
-
         userService.addToFavorite(id);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -70,7 +69,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/announcement/favorite")
+    @RequestMapping(method = RequestMethod.GET, path = "/announcement/favorite", produces = "application/json;charset=utf-8")
     ResponseEntity<String> favoriteAnnouncement() throws ExecutionException, InterruptedException {
         return  ResponseEntity.ok(userService.getFavorite(authService.getUser().getUid()));
     }
