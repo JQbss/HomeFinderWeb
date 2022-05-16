@@ -31,6 +31,7 @@ const Offers = (props) => {
             img={offer.imageLinks}
             price={offer.price}
             id={offer.uid}
+            title={offer.title}
           />
         ))
       ) : (
