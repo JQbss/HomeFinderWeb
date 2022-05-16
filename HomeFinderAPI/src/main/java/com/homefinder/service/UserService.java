@@ -98,7 +98,11 @@ public class UserService {
     }
 
     public void addToFavorite(String id) {
-        userRef.child(authService.getUser().getUid()).child("favorites").push().setValueAsync(id);
+        userRef.child(authService.getUser().getUid()).child("favorites").child(id).setValueAsync(id);
+    }
+
+    public void deleteFromFavorite(String id) {
+        userRef.child(authService.getUser().getUid()).child("favorites").child(id).removeValueAsync();
     }
 
     public String getFavorite(String uid) throws ExecutionException, InterruptedException {

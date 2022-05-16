@@ -63,6 +63,13 @@ public class UserController {
         userService.addToFavorite(id);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    @RequestMapping(method = RequestMethod.DELETE, path = "/announcement/favorite/{id}")
+    ResponseEntity<?> deleteAnnouncementFromFavorite(@PathVariable String id) {
+        userService.deleteFromFavorite(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.GET, path = "/announcement/favorite")
     ResponseEntity<String> favoriteAnnouncement() throws ExecutionException, InterruptedException {
         return  ResponseEntity.ok(userService.getFavorite(authService.getUser().getUid()));
