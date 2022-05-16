@@ -1,11 +1,13 @@
 package com.homefinder.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.homefinder.model.Announcement;
 import com.homefinder.service.AnnouncementService;
 import com.homefinder.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
@@ -62,7 +64,7 @@ public class AnnouncementController {
     public DeferredResult<ResponseEntity<String>> all(@RequestParam(value = "page", defaultValue = "0") int page,
                                                       @RequestParam(value = "limit", defaultValue = "25") int limit,
                                                       @RequestParam(value = "orderBy", defaultValue = "uid") String orderBy,
-                                                      @RequestParam MultiValueMap<String, Object> filter) throws ExecutionException, InterruptedException {
+                                                      @RequestParam MultiValueMap<String, Object> filter) throws ExecutionException, InterruptedException, JsonProcessingException {
         DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
         Map<String, Object> filters = new HashMap<>();
         if(!filter.isEmpty() && filter.containsKey("filter")) {
@@ -76,7 +78,11 @@ public class AnnouncementController {
                 }
             });
         }
-        this.announcementService.getAll(page,limit,orderBy,filters).whenComplete((serviceResult, throwable) ->
+        String uid = null;
+        if(authService.getUser()!=null) {
+            uid = authService.getUser().getUid();
+        }
+        this.announcementService.getAll(page,limit,orderBy,filters,uid).whenComplete((serviceResult, throwable) ->
                 result.setResult(ResponseEntity.ok(serviceResult)));
         return result;
     }
@@ -103,11 +109,11 @@ public class AnnouncementController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @RequestMapping(method = RequestMethod.GET, path = "/mine")
-    DeferredResult<ResponseEntity<String>> getMine() throws ExecutionException, InterruptedException {
+    DeferredResult<ResponseEntity<String>> getMine() throws ExecutionException, InterruptedException, JsonProcessingException {
         Map<String, Object> fid = new HashMap<>();
-        fid.put("sellerUid",authService.getUser().getUid());
+        fid.put("sellerUid", authService.getUser().getUid());
         DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
-        this.announcementService.getAll(0,25,"uid",fid).whenComplete((serviceResult, throwable) ->
+        this.announcementService.getAll(0,25,"uid",fid,null).whenComplete((serviceResult, throwable) ->
                 result.setResult(ResponseEntity.ok(serviceResult)));
         return result;
     }

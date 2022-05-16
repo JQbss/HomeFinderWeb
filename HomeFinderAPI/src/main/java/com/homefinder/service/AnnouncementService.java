@@ -14,17 +14,20 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Service
 @EnableAsync
 public class AnnouncementService{
     final FirebaseDatabase firebaseDatabase;
     final AuthService authService;
+    final UserService userService;
     DatabaseReference announcementRef;
 
-    public AnnouncementService(FirebaseDatabase firebaseDatabase, AuthService authService) {
+    public AnnouncementService(FirebaseDatabase firebaseDatabase, AuthService authService, UserService userService) {
         this.firebaseDatabase = firebaseDatabase;
         this.authService = authService;
+        this.userService = userService;
         DatabaseReference ref = firebaseDatabase.getReference();
         announcementRef= ref.child("announcement");
     }
@@ -55,6 +58,9 @@ public class AnnouncementService{
             try {
                 Map<String, Object> one = oMapper.readValue(serviceResult, Map.class);
                 one.remove("uid");
+                if(one.containsKey("favorite")){
+                    one.remove("favorite");
+                }
                 for (Object kv : one.keySet()) {
                     if(newAnnouncement.get(kv) != null){
                         one.put(kv.toString(), newAnnouncement.get(kv));
@@ -81,11 +87,23 @@ public class AnnouncementService{
     }
 
     @Async
-    public CompletableFuture<String> getAll(int page, int limit, String orderBy, Map<String, Object> filters) {
-        if(filters!=null && !filters.isEmpty()){
-            return CRUDUtil.findAllWithFilter(announcementRef,page,limit,orderBy,filters);
+    public CompletableFuture<String> getAll(int page, int limit, String orderBy, Map<String, Object> filters, String userId) throws ExecutionException, InterruptedException, JsonProcessingException {
+        if(userId != null && filters!=null && !filters.isEmpty()) {
+            String favorite = userService.getFavoriteId(userId);
+            if(favorite!=null)
+                return CRUDUtil.findAllWithFilter(announcementRef, page, limit, orderBy, filters,favorite);
+            return CRUDUtil.findAllWithFilter(announcementRef, page, limit, orderBy, filters,null);
         }
-        return CRUDUtil.findAll(announcementRef,page,limit,orderBy);
+        if(userId != null) {
+            String favorite = userService.getFavoriteId(userId);
+            if(favorite!=null)
+                return CRUDUtil.findAll(announcementRef, page, limit, orderBy, favorite);
+            return CRUDUtil.findAll(announcementRef, page, limit, orderBy,null);
+        }
+        if(filters!=null && !filters.isEmpty()) {
+            return CRUDUtil.findAllWithFilter(announcementRef, page, limit, orderBy, filters,null);
+        }
+        return CRUDUtil.findAll(announcementRef,page,limit,orderBy,null);
     }
 
     @Async

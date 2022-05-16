@@ -30,14 +30,12 @@ public class UserService {
     private final FirebaseDatabase firebaseDatabase;
     @Autowired
     private AuthService authService;
-    private final AnnouncementService announcementService;
     DatabaseReference userRef;
     DatabaseReference announcementRef;
 
-    public UserService(FirebaseAuth firebaseAuth, FirebaseDatabase firebaseDatabase, AnnouncementService announcementService) {
+    public UserService(FirebaseAuth firebaseAuth, FirebaseDatabase firebaseDatabase) {
         this.firebaseAuth = firebaseAuth;
         this.firebaseDatabase = firebaseDatabase;
-        this.announcementService = announcementService;
         DatabaseReference ref = firebaseDatabase.getReference();
         userRef= ref.child("users");
         announcementRef = ref.child("announcement");
@@ -52,7 +50,7 @@ public class UserService {
     }
 
     public CompletableFuture<String> findAll(int page, int limit, String orderBy) {
-        return CRUDUtil.findAll(userRef,page,limit,orderBy);
+        return CRUDUtil.findAll(userRef,page,limit,orderBy,null);
     }
 
     public CompletableFuture<String> getOne(String id) {
@@ -71,6 +69,7 @@ public class UserService {
             try {
                 Map<String, Object> one = oMapper.readValue(serviceResult, Map.class);
                 one.remove("uid");
+
                 for (Object kv : one.keySet()) {
                     if(newMap.get(kv) != null){
                         one.put(kv.toString(), newMap.get(kv));
@@ -105,6 +104,32 @@ public class UserService {
         userRef.child(authService.getUser().getUid()).child("favorites").child(id).removeValueAsync();
     }
 
+    public String getFavoriteId(String uid) throws ExecutionException, InterruptedException {
+        final CompletableFuture<String>[] completableFuture2 = new CompletableFuture[]{new CompletableFuture<>()};
+        getOne(uid).whenComplete((serviceResult, throwable) -> {
+            ObjectMapper oMapper = new ObjectMapper();
+            try {
+                Map<String, Object> users = oMapper.readValue(serviceResult, Map.class);
+                Map<String, Object> fav = oMapper.convertValue(users.get("favorites"), Map.class);
+                Map<String, Object> fid = new HashMap<>();
+                List<String> listFid = new ArrayList<>();
+                for (var key : fav.keySet()) {
+                    listFid.add(fav.get(key).toString());
+                }
+                fid.put("uid", listFid);
+                if(listFid==null){
+                    completableFuture2[0].complete(null);
+                } else {
+                    completableFuture2[0].complete(fid.toString());
+                }
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        return completableFuture2[0].get();
+    }
     public String getFavorite(String uid) throws ExecutionException, InterruptedException {
         final CompletableFuture<String>[] completableFuture2 = new CompletableFuture[]{new CompletableFuture<>()};
         Executors.newCachedThreadPool().submit(() -> {
@@ -124,7 +149,7 @@ public class UserService {
                         listFid.add(fav.get(key).toString());
                     }
                     fid.put("uid", listFid);
-                    completableFuture2[0].complete(announcementService.getAll(0, 25, "uid", fid).get());
+                    completableFuture2[0].complete(CRUDUtil.findAllWithFilter(announcementRef,0, 25, "uid", fid,fid.toString()).get());
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 } catch (IOException | InterruptedException | ExecutionException e) {

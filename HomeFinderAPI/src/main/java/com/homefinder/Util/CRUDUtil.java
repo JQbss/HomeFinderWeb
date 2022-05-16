@@ -13,7 +13,8 @@ public class CRUDUtil {
     public static CompletableFuture<String> findAll(DatabaseReference ref,
                                                     int page,
                                                     int limit,
-                                                    String orderBy) {
+                                                    String orderBy,
+                                                    String favorite) {
         final String[] allJSON = new String[1];
         ref.orderByChild(orderBy).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -27,6 +28,9 @@ public class CRUDUtil {
                         Object data = dataSnapshot.child((String) key).getValue();
                         Map<Object, Object> map = new HashMap<>();
                         map.put("uid", key);
+                        if(favorite!=null && favorite.contains(key.toString())){
+                            map.put("favorite", true);
+                        }
                         for (Object kv :((HashMap) data).keySet()) {
                             map.put(kv, ((HashMap)data).get(kv));
                         }
@@ -64,7 +68,8 @@ public class CRUDUtil {
                                                               int page,
                                                               int limit,
                                                               String orderBy,
-                                                              Map<String, Object> filters) {
+                                                              Map<String, Object> filters,
+                                                              String favorite) {
         final String[] allJSON = new String[1];
         ref.orderByChild(orderBy).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -78,6 +83,9 @@ public class CRUDUtil {
                         Object data = dataSnapshot.child((String) key).getValue();
                         Map<Object, Object> map = new HashMap<>();
                         map.put("uid", key);
+                        if(favorite!=null && favorite.contains(key.toString())){
+                            map.put("favorite", true);
+                        }
                         List<Boolean> isContains= new ArrayList<Boolean>();
                         int numOfFilters = 0;
                         for (Object kv :((HashMap) data).keySet()) {
