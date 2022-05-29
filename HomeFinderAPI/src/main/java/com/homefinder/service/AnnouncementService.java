@@ -50,32 +50,30 @@ public class AnnouncementService{
         return 200;
     }
 
-    @Async
-    public void patch(String id, Announcement announcement) {
+    public void patch(String id, Announcement announcement) throws ExecutionException, InterruptedException {
         ObjectMapper oMapper = new ObjectMapper();
         Map newAnnouncement  = oMapper.convertValue(announcement, Map.class);
-        getOne(id).whenComplete((serviceResult, throwable) -> {
-            try {
-                Map<String, Object> one = oMapper.readValue(serviceResult, Map.class);
-                one.remove("uid");
-                if(one.containsKey("favorite")){
-                    one.remove("favorite");
-                }
-                for (Object kv : one.keySet()) {
-                    if(newAnnouncement.get(kv) != null){
-                        one.put(kv.toString(), newAnnouncement.get(kv));
-                    }
-                }
-                for (Object kv : newAnnouncement.keySet()) {
-                    if(one.get(kv)==null){
-                        one.put(kv.toString(), newAnnouncement.get(kv));
-                    }
-                }
-                announcementRef.child(id).updateChildrenAsync(one);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
+        String serviceResult = getOne(id);
+        try {
+            Map<String, Object> one = oMapper.readValue(serviceResult, Map.class);
+            one.remove("uid");
+            if(one.containsKey("favorite")){
+                one.remove("favorite");
             }
-        });
+            for (Object kv : one.keySet()) {
+                if(newAnnouncement.get(kv) != null){
+                    one.put(kv.toString(), newAnnouncement.get(kv));
+                }
+            }
+            for (Object kv : newAnnouncement.keySet()) {
+                if(one.get(kv)==null){
+                    one.put(kv.toString(), newAnnouncement.get(kv));
+                }
+            }
+            announcementRef.child(id).updateChildrenAsync(one);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
     }
 
     public String deleteById(String id) throws FirebaseAuthException {
@@ -86,8 +84,7 @@ public class AnnouncementService{
         return null;
     }
 
-    @Async
-    public CompletableFuture<String> getAll(int page, int limit, String orderBy, Map<String, Object> filters, String userId) throws ExecutionException, InterruptedException, JsonProcessingException {
+    public String getAll(int page, int limit, String orderBy, Map<String, Object> filters, String userId) throws ExecutionException, InterruptedException, JsonProcessingException {
         if(userId != null && filters!=null && !filters.isEmpty()) {
             String favorite = userService.getFavoriteId(userId);
             if(favorite!=null)
@@ -106,8 +103,7 @@ public class AnnouncementService{
         return CRUDUtil.findAll(announcementRef,page,limit,orderBy,null);
     }
 
-    @Async
-    public CompletableFuture<String> getOne(String id) {
+    public String getOne(String id) throws ExecutionException, InterruptedException {
        return CRUDUtil.getOne(announcementRef,id);
     }
 

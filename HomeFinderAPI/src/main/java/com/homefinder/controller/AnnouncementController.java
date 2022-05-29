@@ -47,7 +47,7 @@ public class AnnouncementController {
     }
 
     @RequestMapping(method = RequestMethod.PATCH,path = "/{id}", produces = "application/json;charset=utf-8")
-    public ResponseEntity<?> patchAnnouncement(@PathVariable String id, @RequestBody Announcement announcement) {
+    public ResponseEntity<?> patchAnnouncement(@PathVariable String id, @RequestBody Announcement announcement) throws ExecutionException, InterruptedException {
         announcementService.patch(id,announcement);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -61,7 +61,7 @@ public class AnnouncementController {
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json;charset=utf-8")
-    public DeferredResult<ResponseEntity<String>> all(@RequestParam(value = "page", defaultValue = "0") int page,
+    public ResponseEntity<String> all(@RequestParam(value = "page", defaultValue = "0") int page,
                                                       @RequestParam(value = "limit", defaultValue = "25") int limit,
                                                       @RequestParam(value = "orderBy", defaultValue = "uid") String orderBy,
                                                       @RequestParam MultiValueMap<String, Object> filter) throws ExecutionException, InterruptedException, JsonProcessingException {
@@ -82,22 +82,22 @@ public class AnnouncementController {
         if(authService.getUser()!=null) {
             uid = authService.getUser().getUid();
         }
-        this.announcementService.getAll(page,limit,orderBy,filters,uid).whenComplete((serviceResult, throwable) ->
-                result.setResult(ResponseEntity.ok(serviceResult)));
-        return result;
+        String res = this.announcementService.getAll(page,limit,orderBy,filters,uid);
+        if(res!=null){
+            return ResponseEntity.ok(res);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 
     @RequestMapping(method = RequestMethod.GET, path = "/{id}", produces = "application/json;charset=utf-8")
-    public DeferredResult<ResponseEntity<?>> getOne(@PathVariable String id) {
+    public ResponseEntity<?> getOne(@PathVariable String id) throws ExecutionException, InterruptedException {
         DeferredResult<ResponseEntity<?>> result = new DeferredResult<>();
-        this.announcementService.getOne(id).whenComplete((serviceResult, throwable) -> {
-            if(serviceResult == null){
-                result.setResult(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
-            }
-            result.setResult(ResponseEntity.ok(serviceResult));
-        });
-        return result;
+        String res = announcementService.getOne(id);
+        if(res!=null){
+            return ResponseEntity.ok(res);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 
@@ -109,12 +109,14 @@ public class AnnouncementController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @RequestMapping(method = RequestMethod.GET, path = "/mine")
-    DeferredResult<ResponseEntity<String>> getMine() throws ExecutionException, InterruptedException, JsonProcessingException {
+    ResponseEntity<String> getMine() throws ExecutionException, InterruptedException, JsonProcessingException {
         Map<String, Object> fid = new HashMap<>();
         fid.put("sellerUid", authService.getUser().getUid());
         DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
-        this.announcementService.getAll(0,25,"uid",fid,null).whenComplete((serviceResult, throwable) ->
-                result.setResult(ResponseEntity.ok(serviceResult)));
-        return result;
+        String res = this.announcementService.getAll(0,25,"uid",fid,null);
+        if(res!=null){
+            return ResponseEntity.ok(res);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

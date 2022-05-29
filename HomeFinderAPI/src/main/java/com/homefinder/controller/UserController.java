@@ -35,21 +35,25 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json;charset=utf-8")
-    public DeferredResult<ResponseEntity<String>> all(@RequestParam(value = "page", defaultValue = "0") int page,
+    public ResponseEntity<String> all(@RequestParam(value = "page", defaultValue = "0") int page,
                                                       @RequestParam(value = "limit", defaultValue = "25") int limit,
-                                                      @RequestParam(value = "orderBy", defaultValue = "uid") String orderBy){
+                                                      @RequestParam(value = "orderBy", defaultValue = "uid") String orderBy) throws ExecutionException, InterruptedException {
         DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
-        this.userService.findAll(page,limit,orderBy).whenComplete((serviceResult, throwable) ->
-                result.setResult(ResponseEntity.ok(serviceResult)));
-        return result;
+        String res = this.userService.findAll(page,limit,orderBy);
+        if(res!=null){
+            return ResponseEntity.ok(res);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(method = RequestMethod.GET,path = "/{id}", produces = "application/json;charset=utf-8")
-    public DeferredResult<ResponseEntity<String>> getOne(@PathVariable String id){
+    public ResponseEntity<String> getOne(@PathVariable String id) throws ExecutionException, InterruptedException {
         DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
-        this.userService.getOne(id).whenComplete((serviceResult, throwable) ->
-                result.setResult(ResponseEntity.ok(serviceResult)));
-        return result;
+        String res =   this.userService.getOne(id);
+        if(res!=null){
+            return ResponseEntity.ok(res);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(method = RequestMethod.DELETE,path = "/{id}")
@@ -74,7 +78,7 @@ public class UserController {
         return  ResponseEntity.ok(userService.getFavorite(authService.getUser().getUid()));
     }
     @RequestMapping(method = RequestMethod.PATCH,path = "/{id}", produces = "application/json;charset=utf-8")
-    public ResponseEntity<?> patchAnnouncement(@PathVariable String id, @RequestBody User user) {
+    public ResponseEntity<?> patchAnnouncement(@PathVariable String id, @RequestBody User user) throws ExecutionException, InterruptedException {
         userService.patch(id,user);
         return new ResponseEntity<>(HttpStatus.OK);
     }

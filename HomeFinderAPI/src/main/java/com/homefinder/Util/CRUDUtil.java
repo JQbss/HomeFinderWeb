@@ -5,17 +5,18 @@ import com.google.gson.Gson;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ExecutionException;
 
 public class CRUDUtil {
 
-    private static final int waitTime = 1;
-    public static CompletableFuture<String> findAll(DatabaseReference ref,
+    public static String findAll(DatabaseReference ref,
                                                     int page,
                                                     int limit,
                                                     String orderBy,
-                                                    String favorite) {
-        final String[] allJSON = new String[1];
+                                                    String favorite) throws ExecutionException, InterruptedException {
+        //final String[] allJSON = new String[1];
+        final CompletableFuture<String>[] allJSON = new CompletableFuture[]{new CompletableFuture<>()};
+
         ref.orderByChild(orderBy).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -50,27 +51,23 @@ public class CRUDUtil {
                 map.put("currentPage", page);
                 map.put("limit",limit);
                 listOfObject2.add(map);
-                allJSON[0] = new Gson().toJson(listOfObject2);
+                allJSON[0].complete(new Gson().toJson(listOfObject2));
             }
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
             }
         });
-        return CompletableFuture.supplyAsync( () ->{
-            try { TimeUnit.SECONDS.sleep(waitTime); }
-            catch (Exception io){ throw new RuntimeException(io); }
-            finally { return allJSON[0];}
-        });
+        return allJSON[0].get();
     }
 
-    public static CompletableFuture<String> findAllWithFilter(DatabaseReference ref,
+    public static String findAllWithFilter(DatabaseReference ref,
                                                               int page,
                                                               int limit,
                                                               String orderBy,
                                                               Map<String, Object> filters,
-                                                              String favorite) {
-        final String[] allJSON = new String[1];
+                                                              String favorite) throws ExecutionException, InterruptedException {
+        final CompletableFuture<String>[] allJSON = new CompletableFuture[]{new CompletableFuture<>()};
         ref.orderByChild(orderBy).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -146,7 +143,7 @@ public class CRUDUtil {
                 map.put("currentPage", page);
                 map.put("limit",limit);
                 listOfObject2.add(map);
-                allJSON[0] = new Gson().toJson(listOfObject2);
+                allJSON[0].complete(new Gson().toJson(listOfObject2));
 
             }
             @Override
@@ -154,15 +151,12 @@ public class CRUDUtil {
                 // Failed to read value
             }
         });
-        return CompletableFuture.supplyAsync( () ->{
-            try { TimeUnit.SECONDS.sleep(waitTime); }
-            catch (Exception io){ throw new RuntimeException(io); }
-            finally { return allJSON[0];}
-        });
+        return allJSON[0].get();
     }
 
-    public static CompletableFuture<String> getOne(DatabaseReference ref, String id){
-        final String[] getOne = {null};
+    public static String getOne(DatabaseReference ref, String id) throws ExecutionException, InterruptedException {
+        final CompletableFuture<String>[] getOne = new CompletableFuture[]{new CompletableFuture<>()};
+
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -172,7 +166,7 @@ public class CRUDUtil {
                 for (Object kv :((HashMap) document).keySet()) {
                     map.put(kv, ((HashMap)document).get(kv));
                 }
-                getOne[0] = new Gson().toJson(map);
+                getOne[0].complete(new Gson().toJson(map));
             }
 
             @Override
@@ -180,11 +174,7 @@ public class CRUDUtil {
                 // Failed to read value
             }
         });
-        return CompletableFuture.supplyAsync( () ->{
-            try { TimeUnit.SECONDS.sleep(waitTime); }
-            catch (Exception io){ throw new RuntimeException(io); }
-            finally { return getOne[0];}
-        });
+        return getOne[0].get();
     }
 
 }

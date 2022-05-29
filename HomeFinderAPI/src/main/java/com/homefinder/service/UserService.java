@@ -49,11 +49,11 @@ public class UserService {
         return newUserRecord;
     }
 
-    public CompletableFuture<String> findAll(int page, int limit, String orderBy) {
+    public String findAll(int page, int limit, String orderBy) throws ExecutionException, InterruptedException {
         return CRUDUtil.findAll(userRef,page,limit,orderBy,null);
     }
 
-    public CompletableFuture<String> getOne(String id) {
+    public String getOne(String id) throws ExecutionException, InterruptedException {
         return CRUDUtil.getOne(userRef,id);
     }
 
@@ -61,30 +61,28 @@ public class UserService {
         firebaseAuth.deleteUser(id);
     }
 
-    @Async
-    public void patch(String id, User user) {
+    public void patch(String id, User user) throws ExecutionException, InterruptedException {
         ObjectMapper oMapper = new ObjectMapper();
         Map newMap  = oMapper.convertValue(user, Map.class);
-        getOne(id).whenComplete((serviceResult, throwable) -> {
-            try {
-                Map<String, Object> one = oMapper.readValue(serviceResult, Map.class);
-                one.remove("uid");
+        String serviceResult = getOne(id);
+        try {
+            Map<String, Object> one = oMapper.readValue(serviceResult, Map.class);
+            one.remove("uid");
 
-                for (Object kv : one.keySet()) {
-                    if(newMap.get(kv) != null){
-                        one.put(kv.toString(), newMap.get(kv));
-                    }
+            for (Object kv : one.keySet()) {
+                if(newMap.get(kv) != null){
+                    one.put(kv.toString(), newMap.get(kv));
                 }
-                for (Object kv : newMap.keySet()) {
-                    if(one.get(kv)==null){
-                        one.put(kv.toString(), newMap.get(kv));
-                    }
-                }
-                userRef.child(id).updateChildrenAsync(one);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
             }
-        });
+            for (Object kv : newMap.keySet()) {
+                if(one.get(kv)==null){
+                    one.put(kv.toString(), newMap.get(kv));
+                }
+            }
+            userRef.child(id).updateChildrenAsync(one);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
     }
 
     public int update(String id, User user) throws FirebaseAuthException {
@@ -104,9 +102,38 @@ public class UserService {
         userRef.child(authService.getUser().getUid()).child("favorites").child(id).removeValueAsync();
     }
 
-    public String getFavoriteId(String uid) throws ExecutionException, InterruptedException {
+    public String getFavoriteId(String uid) throws ExecutionException, InterruptedException, JsonProcessingException {
         final CompletableFuture<String>[] completableFuture2 = new CompletableFuture[]{new CompletableFuture<>()};
-        getOne(uid).whenComplete((serviceResult, throwable) -> {
+
+        String serviceResult = getOne(uid);
+        ObjectMapper oMapper = new ObjectMapper();
+
+        Map<String, Object> users = oMapper.readValue(serviceResult, Map.class);
+        Map<String, Object> fav = oMapper.convertValue(users.get("favorites"), Map.class);
+        Map<String, Object> fid = new HashMap<>();
+        List<String> listFid = new ArrayList<>();
+        for (var key : fav.keySet()) {
+            listFid.add(fav.get(key).toString());
+        }
+        fid.put("uid", listFid);
+        if(listFid==null){
+            return null;
+        } else {
+            return fid.toString();
+        }
+
+    }
+    public String getFavorite(String uid) throws ExecutionException, InterruptedException {
+        final CompletableFuture<String>[] completableFuture2 = new CompletableFuture[]{new CompletableFuture<>()};
+        Executors.newCachedThreadPool().submit(() -> {
+            String serviceResult = null;
+            try {
+                serviceResult = getOne(uid);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             ObjectMapper oMapper = new ObjectMapper();
             try {
                 Map<String, Object> users = oMapper.readValue(serviceResult, Map.class);
@@ -117,45 +144,12 @@ public class UserService {
                     listFid.add(fav.get(key).toString());
                 }
                 fid.put("uid", listFid);
-                if(listFid==null){
-                    completableFuture2[0].complete(null);
-                } else {
-                    completableFuture2[0].complete(fid.toString());
-                }
+                completableFuture2[0].complete(CRUDUtil.findAllWithFilter(announcementRef,0, 25, "uid", fid, fid.toString()));
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
-        });
-        return completableFuture2[0].get();
-    }
-    public String getFavorite(String uid) throws ExecutionException, InterruptedException {
-        final CompletableFuture<String>[] completableFuture2 = new CompletableFuture[]{new CompletableFuture<>()};
-        Executors.newCachedThreadPool().submit(() -> {
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            getOne(uid).whenComplete((serviceResult, throwable) -> {
-                ObjectMapper oMapper = new ObjectMapper();
-                try {
-                    Map<String, Object> users = oMapper.readValue(serviceResult, Map.class);
-                    Map<String, Object> fav = oMapper.convertValue(users.get("favorites"), Map.class);
-                    Map<String, Object> fid = new HashMap<>();
-                    List<String> listFid = new ArrayList<>();
-                    for (var key : fav.keySet()) {
-                        listFid.add(fav.get(key).toString());
-                    }
-                    fid.put("uid", listFid);
-                    completableFuture2[0].complete(CRUDUtil.findAllWithFilter(announcementRef,0, 25, "uid", fid,fid.toString()).get());
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                } catch (IOException | InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                }
-            });
         });
         return completableFuture2[0].get();
     }
