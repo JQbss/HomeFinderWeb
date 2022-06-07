@@ -110,15 +110,14 @@ public class UserService {
         Map<String, Object> fav = oMapper.convertValue(users.get("favorites"), Map.class);
         Map<String, Object> fid = new HashMap<>();
         List<String> listFid = new ArrayList<>();
-        for (var key : fav.keySet()) {
-            listFid.add(fav.get(key).toString());
-        }
-        fid.put("uid", listFid);
-        if(listFid==null){
-            return null;
-        } else {
+        if (fav !=null) {
+            for (var key : fav.keySet()) {
+                listFid.add(fav.get(key).toString());
+            }
+            fid.put("uid", listFid);
             return fid.toString();
         }
+        return null;
 
     }
     public String getFavorite(String uid) throws ExecutionException, InterruptedException {
@@ -138,7 +137,7 @@ public class UserService {
                 Map<String, Object> fav = oMapper.convertValue(users.get("favorites"), Map.class);
                 Map<String, Object> fid = new HashMap<>();
                 List<String> listFid = new ArrayList<>();
-                if(fav !=null){
+                if (fav !=null) {
                     for (var key : fav.keySet()) {
                         listFid.add(fav.get(key).toString());
                     }
