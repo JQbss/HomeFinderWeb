@@ -138,14 +138,16 @@ public class UserService {
                 Map<String, Object> fav = oMapper.convertValue(users.get("favorites"), Map.class);
                 Map<String, Object> fid = new HashMap<>();
                 List<String> listFid = new ArrayList<>();
-                for (var key : fav.keySet()) {
-                    listFid.add(fav.get(key).toString());
-                }
-                if(listFid==null){
-                    completableFuture2[0].complete("Is no favorites");
-                }else{
+                if(fav !=null){
+                    for (var key : fav.keySet()) {
+                        listFid.add(fav.get(key).toString());
+                    }
                     fid.put("uid", listFid);
                     completableFuture2[0].complete(CRUDUtil.findAllWithFilter(announcementRef,0, 25, "uid", fid, fid.toString()));
+                }
+
+                if(listFid==null){
+                    completableFuture2[0].complete("Is no favorites");
                 }
 
             } catch (JsonProcessingException e) {
