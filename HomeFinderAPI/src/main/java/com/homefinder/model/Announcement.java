@@ -26,6 +26,7 @@ public class Announcement {
     private String sellerUid;
     private String link;
     private List<String> imageLinks;
+    private List<String> images;
     private Integer status;
     private Integer yearOfBuilding;
 
@@ -35,6 +36,14 @@ public class Announcement {
 
     public Announcement() {
 
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
     }
 
     public Address getAddress() {

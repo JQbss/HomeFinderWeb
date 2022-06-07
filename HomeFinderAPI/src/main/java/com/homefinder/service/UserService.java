@@ -103,8 +103,6 @@ public class UserService {
     }
 
     public String getFavoriteId(String uid) throws ExecutionException, InterruptedException, JsonProcessingException {
-        final CompletableFuture<String>[] completableFuture2 = new CompletableFuture[]{new CompletableFuture<>()};
-
         String serviceResult = getOne(uid);
         ObjectMapper oMapper = new ObjectMapper();
 
@@ -143,8 +141,13 @@ public class UserService {
                 for (var key : fav.keySet()) {
                     listFid.add(fav.get(key).toString());
                 }
-                fid.put("uid", listFid);
-                completableFuture2[0].complete(CRUDUtil.findAllWithFilter(announcementRef,0, 25, "uid", fid, fid.toString()));
+                if(listFid==null){
+                    completableFuture2[0].complete("Is no favorites");
+                }else{
+                    fid.put("uid", listFid);
+                    completableFuture2[0].complete(CRUDUtil.findAllWithFilter(announcementRef,0, 25, "uid", fid, fid.toString()));
+                }
+
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             } catch (IOException | InterruptedException | ExecutionException e) {
