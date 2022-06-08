@@ -17,6 +17,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -69,6 +70,11 @@ public class AnnouncementController {
         if(authService.getUser()!=null) {
             uid = authService.getUser().getUid();
         }
+        System.out.println(filter.toString());
+        filter.remove("page");
+        filter.remove("limit");
+        filter.remove("orderBy");
+
         String res = this.announcementService.getAll(page,limit,orderBy,filter,uid);
         if(res!=null){
             return ResponseEntity.ok(res);
