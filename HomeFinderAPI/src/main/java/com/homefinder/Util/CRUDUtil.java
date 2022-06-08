@@ -86,7 +86,7 @@ public class CRUDUtil {
                         List<Boolean> isContains= new ArrayList<Boolean>();
                         int numOfFilters = 0;
                         for (Object kv :((HashMap) data).keySet()) {
-                            if(filters.containsKey(kv) && filters.get(kv)!=""){
+                            if(filters.containsKey(kv) && !filters.get(kv).toString().isEmpty()){
                                 if(filters.get(kv).toString().contains(":")){
                                     String[] tab = filters.get(kv).toString().split(":");
                                     Double[] range = {Double.parseDouble(tab[0]), Double.parseDouble(tab[1])};
@@ -106,7 +106,7 @@ public class CRUDUtil {
                             }
                             else if(filters.toString().contains("__") && ((HashMap)data).containsKey("address")) {
                                 for (String el : filters.keySet()) {
-                                    if(el.contains("__") && filters.get(el)!=""){
+                                    if(el.contains("__") && !filters.get(el).toString().isEmpty()){
                                         if (((HashMap<?, ?>) ((HashMap<?, ?>) data).get("address")).get(el.split("__")[1]).toString().toUpperCase().contains(filters.get(el).toString().toUpperCase())) {
                                              isContains.add(true);
                                         }
@@ -120,7 +120,7 @@ public class CRUDUtil {
                             else if(filters.toString().contains("__") && ((HashMap)data).containsKey("furnishes")) {
 
                                 for (String el : filters.keySet()) {
-                                    if(el.contains("__") && filters.get(el)!=""){
+                                    if(el.contains("__") && !filters.get(el).toString().isEmpty()){
                                         if (((HashMap<?, ?>) ((HashMap<?, ?>) data).get("furnishes")).get(el.split("__")[1]).toString().toUpperCase().contains(filters.get(el).toString().toUpperCase())) {
                                             isContains.add(true);
                                         }
