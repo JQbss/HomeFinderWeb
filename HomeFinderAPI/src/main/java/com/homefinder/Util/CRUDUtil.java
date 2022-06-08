@@ -3,6 +3,7 @@ package com.homefinder.Util;
 import com.google.firebase.database.*;
 import com.google.gson.Gson;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -88,13 +89,30 @@ public class CRUDUtil {
                         for (Object kv :((HashMap) data).keySet()) {
                             if(filters.containsKey(kv) && !filters.get(kv).toString().isEmpty()){
                                 if(filters.get(kv).toString().contains(":")){
-                                    String[] tab = filters.get(kv).toString().split(":");
-                                    Double[] range = {Double.parseDouble(tab[0]), Double.parseDouble(tab[1])};
-                                    Double field = Double.parseDouble(((HashMap)data).get(kv).toString());
-                                    if(field >= range[0] && field <= range[1]) {
-                                        isContains.add(true);
-                                    }else {
-                                        isContains.add(false);
+                                    if(filters.get(kv).toString().length()>1){
+                                        String[] tab = new String[2];
+                                        if(filters.get(kv).toString().startsWith(":")){
+                                            tab[1] = filters.get(kv).toString().split(":")[1];
+                                        } else if(filters.get(kv).toString().endsWith(":")){
+                                            tab[0] = filters.get(kv).toString().split(":")[0];
+                                        }
+                                        else {
+                                            tab = filters.get(kv).toString().split(":");
+                                        }
+                                        //TODO filtry typu 200: i :700
+                                        if(tab[0]==null || tab[0].isEmpty()){
+                                            tab[0] = String.valueOf(Double.MIN_VALUE);
+                                        }
+                                        if(tab[1]==null || tab[1].isEmpty()){
+                                            tab[1] = String.valueOf(Double.MAX_VALUE);
+                                        }
+                                        Double[] range = {Double.parseDouble(tab[0]), Double.parseDouble(tab[1])};
+                                        Double field = Double.parseDouble(((HashMap)data).get(kv).toString());
+                                        if(field >= range[0] && field <= range[1]) {
+                                            isContains.add(true);
+                                        }else {
+                                            isContains.add(false);
+                                        }
                                     }
                                 }
                                 else if(((HashMap)data).get(kv).toString().toUpperCase().contains(filters.get(kv).toString().toUpperCase())){
