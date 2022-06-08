@@ -97,7 +97,7 @@ public class CRUDUtil {
                                         isContains.add(false);
                                     }
                                 }
-                                else if(((HashMap)data).get(kv).toString().contains(filters.get(kv).toString())){
+                                else if(((HashMap)data).get(kv).toString().toUpperCase().contains(filters.get(kv).toString().toUpperCase())){
                                     isContains.add(true);
                                 } else {
                                     isContains.add(false);
@@ -108,7 +108,7 @@ public class CRUDUtil {
 
                                 for (String el : filters.keySet()) {
                                     if(el.contains("__")){
-                                        if (((HashMap<?, ?>) ((HashMap<?, ?>) data).get("address")).get(el.split("__")[1]).toString().contains(filters.get(el).toString())) {
+                                        if (((HashMap<?, ?>) ((HashMap<?, ?>) data).get("address")).get(el.split("__")[1]).toString().toUpperCase().contains(filters.get(el).toString().toUpperCase())) {
                                              isContains.add(true);
                                         }
                                         else {
@@ -122,7 +122,7 @@ public class CRUDUtil {
 
                                 for (String el : filters.keySet()) {
                                     if(el.contains("__")){
-                                        if (((HashMap<?, ?>) ((HashMap<?, ?>) data).get("furnishes")).get(el.split("__")[1]).toString().contains(filters.get(el).toString())) {
+                                        if (((HashMap<?, ?>) ((HashMap<?, ?>) data).get("furnishes")).get(el.split("__")[1]).toString().toUpperCase().contains(filters.get(el).toString().toUpperCase())) {
                                             isContains.add(true);
                                         }
                                         else {
