@@ -1,5 +1,6 @@
 html {
   font-family: Montserrat;
+  scroll-behavior: smooth;
 }
 
 .header-container {

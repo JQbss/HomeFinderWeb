@@ -13,19 +13,24 @@ const Offers = (props) => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [totalItems, setTotalItems] = useState(null);
   useEffect(() => {
-    FetchManager.GetMany("announcement", currentPage, limit, filters).then(
-      (resp) => {
+    setLoading(true);
+    FetchManager.GetMany("announcement", currentPage, limit, filters)
+      .then((resp) => {
         setData(resp[0]?.items);
-        setTotalItems(resp[0].totalItems);
-      }
-    );
+        setTotalItems(resp[0]?.totalItems);
+      })
+      .finally(() => setLoading(false));
   }, [filters, currentPage]);
+
+  if (!loading && (!data || data?.length == 0))
+    return <h3>Brak wyników dla podanych parametów wyszukiwania</h3>;
 
   return (
     <>
-      {data.length != 0 ? (
+      {data?.length != 0 ? (
         data?.map((offer) => (
           <OfferHome
             img={offer.imageLinks}
@@ -55,8 +60,15 @@ const Offers = (props) => {
 };
 
 const Home = (props) => {
-  const [address, setAddress] = useState("Warszawa, województwo mazowieckie");
-  const [city, setCity] = useState("Warszawa");
+  const [address, setAddress] = useState("Warszawa");
+  const [filters, setFilters] = useState({ localization: "Warszawa" });
+
+  const filtersHandler = (_filters) => {
+    setFilters(_filters);
+    if (_filters?.localization) {
+      setAddress(_filters?.localization);
+    }
+  };
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(function (position) {
@@ -64,20 +76,20 @@ const Home = (props) => {
         position.coords.latitude,
         position.coords.longitude
       ).then((resp) => {
-        setAddress(`${resp.address.city}, ${resp.address.state}`);
-        setCity(resp.address.city);
+        setAddress(resp.address.city);
+        setFilters({ localization: resp.address.city });
       });
     });
   }, []);
 
   return (
     <>
-      <HeroHome />
+      <HeroHome filtersHandler={filtersHandler} />
       <div className="home-container-line" />
       <TitleLocationHome location={address} />
       <div className="home-container-line" />
-      <div className="home-offers-container">
-        <Offers filters={""} />
+      <div className="home-offers-container" id="offers">
+        <Offers filters={filters} />
       </div>
     </>
   );

@@ -17,6 +17,7 @@ ReactDOM.render(
         <Route path="news" element={<App page={"news"} />} />
         <Route path="news/:newsId" element={<App page={"news-details"} />} />
         <Route path="contact" element={<App page={"contact"} />} />
+        <Route path="about" element={<App page={"about"} />} />
         <Route
           path="announcement/:announcementId"
           element={<App page={"announcement"} />}

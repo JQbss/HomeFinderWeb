@@ -12,20 +12,22 @@ import { Swiper, SwiperSlide } from "swiper/react/swiper-react.js";
 import "swiper/swiper.scss"; // core Swiper
 import "swiper/modules/navigation/navigation.scss"; // Navigation module
 import "swiper/modules/pagination/pagination.scss"; // Pagination module
+import { FurnitureObject } from "../fragments/FurnitureObject";
 
 const Announcement = (props) => {
   const navigate = useNavigate();
   const { announcementId } = useParams();
   const [annData, setAnnData] = useState();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    FetchManager.GetOne("announcement", announcementId).then((data) =>
-      setAnnData(data)
-    );
+    setLoading(true);
+    FetchManager.GetOne("announcement", announcementId)
+      .then((data) => setAnnData(data))
+      .finally(() => setLoading(false));
   }, []);
 
-  if (annData == "error") navigate("/404");
-  console.log(annData);
+  if (annData == "error" || (!loading && !annData)) navigate("/404");
 
   return annData ? (
     <>
@@ -45,6 +47,15 @@ const Announcement = (props) => {
                   </SwiperSlide>
                 ))}
               </Swiper>
+              <h3>Wyposażenie:</h3>
+              <div className="offer-home-info-list">
+                <FurnitureObject name={"Łóżko"} />
+                <FurnitureObject name={"Dywan"} />
+                <FurnitureObject name={"Fotel"} />
+                <FurnitureObject name={"Lodówka"} />
+                <FurnitureObject name={"Pralka"} />
+                <FurnitureObject name={"Wanna"} />
+              </div>
             </div>
             <div className="ann-details-descr">
               {annData?.link && (
@@ -52,6 +63,7 @@ const Announcement = (props) => {
                   <h3>Link do ogłoszenia </h3>
                 </a>
               )}
+              {annData?.price && <h3>Cena: {annData?.price} zł</h3>}
               <h3>Opis:</h3>
               <br />
               {annData?.description}

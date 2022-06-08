@@ -63,7 +63,7 @@ const Login = (props) => {
                   required
                 />
               </div>
-              <ButtonStandart btnType="submit" label="Wyślij" type={0} />
+              <ButtonStandart btnType="btn" label="Wyślij" type={0} />
             </form>
           </div>
           <div className="mt-4">

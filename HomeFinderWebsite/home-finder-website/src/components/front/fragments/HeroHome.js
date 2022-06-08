@@ -8,6 +8,7 @@ import "swiper/swiper.scss"; // core Swiper
 import "swiper/modules/navigation/navigation.scss"; // Navigation module
 import "swiper/modules/pagination/pagination.scss"; // Pagination module
 import ButtonStandart from "../../small-elements/ButtonStandart";
+import { useState } from "react";
 
 const Images = ["/hero-1.jpg", "/hero-2.jpg"];
 
@@ -27,7 +28,9 @@ const Slide = ({ imgUrl }) => {
   );
 };
 
-const SliderHeader = () => {
+const SliderHeader = (props) => {
+  const [city, setCity] = useState("");
+
   return (
     <div className="slider-header-container">
       <div className="slider-header-subcontainer">
@@ -46,8 +49,20 @@ const SliderHeader = () => {
               margin: "0 50px 0 0",
             }}
             placeholder="Wpisz miasto"
+            value={city}
+            onChange={(e) => {
+              setCity(e.target.value);
+            }}
           />
-          <ButtonStandart href="#" label="SZUKAJ" />
+          <ButtonStandart
+            btnType="link"
+            href="/#offers"
+            label="SZUKAJ"
+            hashLink={true}
+            onClick={(e) => {
+              props.filtersHandler({ localization: city });
+            }}
+          />
         </div>
       </div>
     </div>
@@ -57,7 +72,7 @@ const SliderHeader = () => {
 const HeroHome = (props) => {
   return (
     <div style={{ position: "relative" }}>
-      <SliderHeader />
+      <SliderHeader filtersHandler={props?.filtersHandler} />
       <Swiper pagination={true}>
         {Images.map((x, index) => (
           <SwiperSlide key={index}>

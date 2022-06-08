@@ -61,11 +61,11 @@ const Register = (props) => {
                   required
                 />
                 <label class="form-check-label" for="Check1">
-                  Zatwierdzam nieistniejący <a href="#">regulamin</a>
+                  Zatwierdzam <a href="/Regulamin.pdf">regulamin</a>
                 </label>
               </div>
               <div>
-                <ButtonStandart btnType="submit" label="Wyślij" type={0} />
+                <ButtonStandart btnType="btn" label="Wyślij" type={0} />
               </div>
             </form>
           </div>

@@ -26,9 +26,13 @@ class FetchManager {
   }
 
   static async GetMany(entityName, page = 0, limit = 25, filters) {
+    let filtersStr = "";
+    for (const [key, value] of Object.entries(filters)) {
+      if (key && value) filtersStr += `${key}=${value}&`;
+    }
     return fetch(
       `${process.env.REACT_APP_API}/${entityName}?page=${page}&limit=${limit}${
-        filters ? filters : ""
+        filtersStr != "" ? `&${filtersStr}` : ""
       }`
     )
       .then((response) => {
