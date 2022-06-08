@@ -64,25 +64,12 @@ public class AnnouncementController {
     public ResponseEntity<String> all(@RequestParam(value = "page", defaultValue = "0") int page,
                                                       @RequestParam(value = "limit", defaultValue = "25") int limit,
                                                       @RequestParam(value = "orderBy", defaultValue = "uid") String orderBy,
-                                                      @RequestParam MultiValueMap<String, Object> filter) throws ExecutionException, InterruptedException, JsonProcessingException {
-        DeferredResult<ResponseEntity<String>> result = new DeferredResult<>();
-        Map<String, Object> filters = new HashMap<>();
-        if(!filter.isEmpty() && filter.containsKey("filter")) {
-            filter.get("filter").forEach(el -> {
-                String[] tab = el.toString().split(":");
-                if (tab.length > 2) {
-                    String range = tab[1]+":"+tab[2];
-                    filters.put(tab[0], range);
-                } else {
-                    filters.put(tab[0], tab[1]);
-                }
-            });
-        }
+                                                      @RequestParam Map<String, Object> filter) throws ExecutionException, InterruptedException, JsonProcessingException {
         String uid = null;
         if(authService.getUser()!=null) {
             uid = authService.getUser().getUid();
         }
-        String res = this.announcementService.getAll(page,limit,orderBy,filters,uid);
+        String res = this.announcementService.getAll(page,limit,orderBy,filter,uid);
         if(res!=null){
             return ResponseEntity.ok(res);
         }
