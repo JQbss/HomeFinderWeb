@@ -8,17 +8,9 @@ import { Swiper, SwiperSlide } from "swiper/react/swiper-react.js";
 import "swiper/swiper.scss"; // core Swiper
 import "swiper/modules/navigation/navigation.scss"; // Navigation module
 import "swiper/modules/pagination/pagination.scss"; // Pagination module
+import { FurnitureObject } from "./FurnitureObject";
 
 SwiperCore.use([Navigation, Pagination]);
-
-const FurnitureObject = ({ name }) => {
-  return (
-    <div className="offer-home-info-list-object">
-      <img src="/check-icon.png" height={18} />
-      {name}
-    </div>
-  );
-};
 
 const OfferHome = (props) => {
   const [blur, setBlur] = useState(false);

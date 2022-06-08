@@ -24,13 +24,13 @@ const Header = (props) => {
       <div className="header-main-menu-container">
         <div className="header-main-menu">
           <li>
-            <a href="#">Wyszukaj</a>
+            <a href="/#offers">Wyszukaj</a>
           </li>
           <li>
             <a href="/news">Aktualności</a>
           </li>
           <li>
-            <a href="#">Jak to działa?</a>
+            <a href="/about">Jak to działa?</a>
           </li>
           <li>
             <Link to="/user-profile">Moje konto</Link>
