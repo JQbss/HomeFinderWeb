@@ -70,7 +70,6 @@ public class AnnouncementController {
         if(authService.getUser()!=null) {
             uid = authService.getUser().getUid();
         }
-        System.out.println(filter.toString());
         filter.remove("page");
         filter.remove("limit");
         filter.remove("orderBy");
