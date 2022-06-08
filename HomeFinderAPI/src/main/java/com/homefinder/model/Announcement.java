@@ -30,6 +30,8 @@ public class Announcement {
     private Integer status;
     private Integer yearOfBuilding;
 
+    private Furnishes furnishes;
+
     private Integer market;
 
     private Integer additionalArea;
@@ -48,6 +50,14 @@ public class Announcement {
 
     public Address getAddress() {
         return address;
+    }
+
+    public Furnishes getFurnishes() {
+        return furnishes;
+    }
+
+    public void setFurnishes(Furnishes furnishes) {
+        this.furnishes = furnishes;
     }
 
     public void setAddress(Address address) {
