@@ -41,7 +41,7 @@ const OfferHome = (props) => {
           blur ? "offer-home-blurred" : ""
         }`}
       >
-        <div style={{ position: "relative", width: 320 }}>
+        <div className="offer-home-image-container">
           {Array.isArray(props.img) ? (
             <Swiper pagination={true}>
               {props.img?.map((x, index) => (
@@ -64,6 +64,9 @@ const OfferHome = (props) => {
           className="offer-home-info"
           onMouseEnter={blurBg}
           onMouseLeave={unBlurBg}
+          onClick={() => {
+            window.location.href = props.id ? `announcement/${props.id}` : "#";
+          }}
         >
           {props.title && <span>{props.title}</span>}
           <span>Cena: {props.price ? props.price : "-"} zł</span>

@@ -21,6 +21,31 @@ const Header = (props) => {
           />
         </Link>
       </div>
+      <div class="dropdown">
+        <img
+          onClick={() => {
+            document.getElementById("menuDropdown").classList.toggle("show");
+          }}
+          class="dropbtn"
+          src="/menu-icon.png"
+          width={128}
+          alt="menu"
+        />
+        <div id="menuDropdown" class="dropdown-content">
+          <li>
+            <a href="/#offers">Wyszukaj</a>
+          </li>
+          <li>
+            <a href="/news">Aktualności</a>
+          </li>
+          <li>
+            <a href="/about">Jak to działa?</a>
+          </li>
+          <li>
+            <Link to="/user-profile">Moje konto</Link>
+          </li>
+        </div>
+      </div>
       <div className="header-main-menu-container">
         <div className="header-main-menu">
           <li>
