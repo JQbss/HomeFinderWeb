@@ -122,9 +122,35 @@ public class CRUDUtil {
                                 }
                                 numOfFilters++;
                             }
-                            else if(filters.toString().contains("__") && ((HashMap)data).containsKey("address")) {
+                            else if(filters.toString().contains("address__") && filters.toString().contains("furnishes__")) {
+                                if(((HashMap)data).containsKey("address") && ((HashMap)data).containsKey("furnishes")) {
+                                    for (String el : filters.keySet()) {
+                                        if(el.contains("address__")  && !filters.get(el).toString().isEmpty()) {
+                                            if (((HashMap<?, ?>) ((HashMap<?, ?>) data).get("address")).get(el.split("__")[1]).toString().toUpperCase().contains(filters.get(el).toString().toUpperCase()))
+                                            {
+                                                isContains.add(true);
+                                            }
+                                            else {
+                                                isContains.add(false);
+                                            }
+                                            numOfFilters++;
+                                        }
+                                        else if(el.contains("furnishes__")  && !filters.get(el).toString().isEmpty()) {
+                                            if (((HashMap<?, ?>) ((HashMap<?, ?>) data).get("furnishes")).get(el.split("__")[1]).toString().toUpperCase().contains(filters.get(el).toString().toUpperCase()))
+                                            {
+                                                isContains.add(true);
+                                            }
+                                            else {
+                                                isContains.add(false);
+                                            }
+                                            numOfFilters++;
+                                        }
+                                    }
+                                }
+                            }
+                            else if(filters.toString().contains("address__") && ((HashMap)data).containsKey("address")) {
                                 for (String el : filters.keySet()) {
-                                    if(el.contains("__") && !filters.get(el).toString().isEmpty()){
+                                    if(el.contains("address__") && !filters.get(el).toString().isEmpty()){
                                         if (((HashMap<?, ?>) ((HashMap<?, ?>) data).get("address")).get(el.split("__")[1]).toString().toUpperCase().contains(filters.get(el).toString().toUpperCase())) {
                                              isContains.add(true);
                                         }
@@ -135,10 +161,9 @@ public class CRUDUtil {
                                     }
                                 }
                             }
-                            else if(filters.toString().contains("__") && ((HashMap)data).containsKey("furnishes")) {
-
+                            else if(filters.toString().contains("furnishes__") && ((HashMap)data).containsKey("furnishes")) {
                                 for (String el : filters.keySet()) {
-                                    if(el.contains("__") && !filters.get(el).toString().isEmpty()){
+                                    if(el.contains("furnishes__") && !filters.get(el).toString().isEmpty()){
                                         if (((HashMap<?, ?>) ((HashMap<?, ?>) data).get("furnishes")).get(el.split("__")[1]).toString().toUpperCase().contains(filters.get(el).toString().toUpperCase())) {
                                             isContains.add(true);
                                         }
