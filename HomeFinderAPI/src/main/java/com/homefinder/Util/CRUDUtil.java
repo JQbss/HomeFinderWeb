@@ -146,6 +146,9 @@ public class CRUDUtil {
                                             numOfFilters++;
                                         }
                                     }
+                                } else{
+                                    isContains.add(false);
+                                    numOfFilters++;
                                 }
                             }
                             else if(filters.toString().contains("address__") && ((HashMap)data).containsKey("address")) {
@@ -173,6 +176,9 @@ public class CRUDUtil {
                                         numOfFilters++;
                                     }
                                 }
+                            } else {
+                                isContains.add(false);
+                                numOfFilters++;
                             }
                             map.put(kv, ((HashMap)data).get(kv));
                         }
