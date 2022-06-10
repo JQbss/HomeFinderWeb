@@ -42,12 +42,6 @@ const SliderHeader = (props) => {
         </div>
         <div className="slider-header-search">
           <input
-            style={{
-              borderRadius: "40px",
-              width: "250px",
-              height: "48px",
-              margin: "0 50px 0 0",
-            }}
             placeholder="Wpisz miasto"
             value={city}
             onChange={(e) => {

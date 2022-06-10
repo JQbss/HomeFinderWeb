@@ -142,6 +142,13 @@ html {
   margin: 50px 0 0 75px;
 }
 
+.slider-header-search input {
+  border-radius: 40px;
+  width: 250px;
+  height: 48px;
+  margin: 0px 50px 0px 0px;
+}
+
 .title-location-home-container {
   background: #f8f6da;
   display: flex;
@@ -174,8 +181,7 @@ html {
 }
 
 .offer-home-container {
-  width: 900px;
-  height: 300px;
+  max-width: 900px;
   background: #fcfbed;
   box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.2);
   border-radius: 45px;
@@ -189,6 +195,11 @@ html {
   height: 100%;
   width: 100%;
   align-items: center;
+}
+
+.offer-home-image-container {
+  position: relative;
+  width: 320px;
 }
 
 .offer-home-image {
@@ -672,4 +683,120 @@ ADMIN PANEL
   display: flex;
   justify-content: center;
   min-height: calc(100vh - 110px);
+}
+
+.dropbtn {
+  /* background-color: #3498db; */
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover,
+.dropbtn:focus {
+  /* background-color: #2980b9; */
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 99;
+}
+
+.dropdown-content a {
+  font-weight: 600;
+  color: #265954;
+  text-decoration: none;
+  padding: 12px 16px;
+  display: block;
+
+  transition: background-size 0.3s, background-position 0s 0.3s; /*change after the size immediately*/
+  background-image: linear-gradient(#a7695c, #a7695c);
+  background-position: 0 100%; /*OR bottom left*/
+  background-size: 0% 4px;
+  background-repeat: no-repeat;
+}
+
+.dropdown a:hover {
+  color: #a7695c;
+  background-position: 100% 100%; /*OR bottom right*/
+  background-size: 100% 4px;
+}
+
+.show {
+  display: block;
+}
+
+.pagination a{
+  color: #a7695c !important;
+}
+
+.active a{
+  background-color: #a7695c !important;
+  border-color: #a7695c !important;
+  color: #ffffff !important;
+}
+
+@media screen and (min-width: 920px) {
+  .dropdown {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .header-main-menu-container a {
+    font-size: 16px;
+  }
+  .header-main-menu-buttons {
+    flex-direction: column;
+    margin: 0;
+  }
+}
+
+@media screen and (max-width: 920px) {
+  .header-main-menu-container {
+    display: none;
+  }
+  .offer-home-info{
+    cursor: pointer;
+  }
+  .offer-home-subcontainer {
+    flex-direction: column;
+    padding: 20px 10px 20px 10px;
+  }
+  .slider-header-subcontainer {
+    margin: 40px 0 0 80px;
+  }
+  .offer-home-image {
+    width: 240px;
+  }
+  .slider-header-search {
+    margin: 40px 0 0 0;
+  }
+  .slider-header-subtitle {
+    margin: 0 10px 0 0;
+    font-size: 24px;
+  }
+  .slider-header-title {
+    margin: 0;
+    font-size: 44px;
+  }
+  .title-location-home {
+    display: inline;
+    overflow-wrap: anywhere;
+  }
+  .slider-header-search input {
+    margin: 0;
+  }
 }
