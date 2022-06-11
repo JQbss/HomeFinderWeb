@@ -8,6 +8,7 @@ const ButtonStandart = ({
   style = {},
   onClick = null,
   hashLink = false,
+  name = "",
 }) => {
   switch (btnType) {
     case "link":
@@ -36,6 +37,8 @@ const ButtonStandart = ({
           type="submit"
           className={type == 0 ? "button-normal" : "button-trans"}
           onClick={onClick}
+          name={name}
+          style={style}
         >
           {label}
         </button>

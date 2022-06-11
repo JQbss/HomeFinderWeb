@@ -65,9 +65,9 @@ const Home = (props) => {
 
   const filtersHandler = (_filters) => {
     setFilters(_filters);
-    if (_filters?.localization) {
-      setAddress(_filters?.localization);
-    }
+    _filters?.localization
+      ? setAddress(_filters?.localization)
+      : setAddress("Wszystkie regiony");
   };
 
   useEffect(() => {

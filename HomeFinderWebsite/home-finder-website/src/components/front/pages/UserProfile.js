@@ -25,7 +25,8 @@ const UserProfile = (props) => {
       <div
         style={{
           display: "flex",
-          width: 1000,
+          flexDirection: "column",
+          maxWidth: 1000,
           backgroundColor: "#f8f6da",
           padding: "20px 20px 140px 20px",
         }}
@@ -42,7 +43,6 @@ const UserProfile = (props) => {
             alt="user_icon"
             style={{ height: "200px" }}
           />
-          <ButtonStandart label="Zmień zdjęcie" />
         </div>
         <div
           style={{
@@ -83,7 +83,7 @@ const UserProfile = (props) => {
             />
           </div>
           <div>
-            <ButtonStandart label="Edytuj" type={1} style={{ margin: 20 }} />
+            <ButtonStandart label="Edytuj" href="/user-profile-edit" type={1} style={{ margin: 20 }} />
           </div>
         </div>
       </div>

@@ -36,7 +36,7 @@ const Announcement = (props) => {
           <h2>{annData?.title}</h2>
 
           <div className="ann-details-body">
-            <div style={{ position: "relative", width: 540 }}>
+            <div className="ann-swiper-wrapper">
               <Swiper pagination autoplay loop>
                 {annData?.imageLinks?.map((x, index) => (
                   <SwiperSlide key={index}>

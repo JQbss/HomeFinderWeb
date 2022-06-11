@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 import About from "./pages/About";
+import UserProfileEdit from "./pages/UserProfileEdit";
 
 const getBody = (pageName) => {
   switch (pageName) {
@@ -21,6 +22,8 @@ const getBody = (pageName) => {
       return <Register />;
     case "user-profile":
       return <UserProfile />;
+    case "user-profile-edit":
+      return <UserProfileEdit />;
     case "news":
       return <News />;
     case "news-details":

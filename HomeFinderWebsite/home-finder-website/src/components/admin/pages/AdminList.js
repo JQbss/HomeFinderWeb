@@ -4,17 +4,24 @@ import { useParams } from "react-router";
 import FetchManager from "../../../classes/FetchManager";
 import ButtonStandart from "../../small-elements/ButtonStandart";
 import { entities } from "../config/entities";
+import Pagination from "react-js-pagination";
 
 const AdminList = (props) => {
   const { entity } = useParams();
   const [fields, setFields] = useState([]);
   const [headers, setHeaders] = useState([]);
 
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalItems, setTotalItems] = useState(null);
+
+  const limit = 10;
+
   useEffect(() => {
-    FetchManager.GetMany(entity).then((response) => {
+    FetchManager.GetMany(entity, currentPage, limit).then((response) => {
       FieldGenerator(response[0].items);
+      setTotalItems(response[0]?.totalItems);
     });
-  }, []);
+  }, [currentPage]);
 
   const FieldGenerator = (data) => {
     let _fieldsValues = [];
@@ -44,7 +51,7 @@ const AdminList = (props) => {
         ))}
         {entities[entity]?.edit && (
           <td>
-            <ButtonStandart href="#" label="Edytuj" type={1} />
+            <ButtonStandart href={`/admin/${entity}/edit/${props[0]}`} label="Edytuj" type={1} />
           </td>
         )}
       </tr>
@@ -69,6 +76,19 @@ const AdminList = (props) => {
           <tbody>{fields}</tbody>
         </table>
       </div>
+      <Pagination
+        activePage={currentPage + 1}
+        itemsCountPerPage={limit}
+        totalItemsCount={totalItems}
+        pageRangeDisplayed={4}
+        onChange={(page) => {
+          setCurrentPage(page - 1);
+          setFields([]);
+        }}
+        itemClass="page-item"
+        linkClass="page-link"
+        hideDisabled
+      />
     </div>
   ) : (
     <Oval color="#00BFFF" height={80} width={80} />

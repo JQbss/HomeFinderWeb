@@ -27,9 +27,10 @@ class FetchManager {
 
   static async GetMany(entityName, page = 0, limit = 25, filters) {
     let filtersStr = "";
-    for (const [key, value] of Object.entries(filters)) {
-      if (key && value) filtersStr += `${key}=${value}&`;
-    }
+    if (filters instanceof Object)
+      for (const [key, value] of Object.entries(filters)) {
+        if (key && value) filtersStr += `${key}=${value}&`;
+      }
     return fetch(
       `${process.env.REACT_APP_API}/${entityName}?page=${page}&limit=${limit}${
         filtersStr != "" ? `&${filtersStr}` : ""
@@ -55,6 +56,17 @@ class FetchManager {
       .then((data) => {
         return data;
       });
+  }
+
+  static async EditUserData(userId, data) {
+    return fetch(`${process.env.REACT_APP_API}/users/${userId}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
+    }).then((response) => "ok");
   }
 }
 
