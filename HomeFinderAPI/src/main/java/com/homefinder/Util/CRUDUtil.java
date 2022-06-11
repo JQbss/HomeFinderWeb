@@ -87,9 +87,9 @@ public class CRUDUtil {
                         List<Boolean> isContains= new ArrayList<Boolean>();
                         int numOfFilters = 0;
                         for (Object kv :((HashMap) data).keySet()) {
-                            if(filters.containsKey(kv) && !filters.get(kv).toString().isEmpty()){
-                                if(filters.get(kv).toString().contains(":")){
-                                    if(filters.get(kv).toString().length()>1){
+                            if(filters.containsKey(kv) && !filters.get(kv).toString().isEmpty() && !kv.toString().equals("address") && !kv.toString().equals("furnishes")) {
+                                if(filters.get(kv).toString().contains(":")) {
+                                    if(filters.get(kv).toString().length()>1) {
                                         String[] tab = new String[2];
                                         if(filters.get(kv).toString().startsWith(":")){
                                             tab[1] = filters.get(kv).toString().split(":")[1];
@@ -99,28 +99,28 @@ public class CRUDUtil {
                                         else {
                                             tab = filters.get(kv).toString().split(":");
                                         }
-                                        //TODO filtry typu 200: i :700
-                                        if(tab[0]==null || tab[0].isEmpty()){
+                                        if(tab[0]==null || tab[0].isEmpty()) {
                                             tab[0] = String.valueOf(Double.MIN_VALUE);
                                         }
-                                        if(tab[1]==null || tab[1].isEmpty()){
+                                        if(tab[1]==null || tab[1].isEmpty()) {
                                             tab[1] = String.valueOf(Double.MAX_VALUE);
                                         }
-                                        Double[] range = {Double.parseDouble(tab[0]), Double.parseDouble(tab[1])};
+                                        Double[] range = { Double.parseDouble(tab[0]), Double.parseDouble(tab[1]) };
                                         Double field = Double.parseDouble(((HashMap)data).get(kv).toString());
                                         if(field >= range[0] && field <= range[1]) {
                                             isContains.add(true);
-                                        }else {
+                                            numOfFilters++;
+                                        } else {
                                             isContains.add(false);
                                         }
                                     }
                                 }
                                 else if(((HashMap)data).get(kv).toString().toUpperCase().contains(filters.get(kv).toString().toUpperCase())){
                                     isContains.add(true);
+                                    numOfFilters++;
                                 } else {
                                     isContains.add(false);
                                 }
-                                numOfFilters++;
                             }
                             else if(filters.toString().contains("address__") && filters.toString().contains("furnishes__")) {
                                 if(((HashMap)data).containsKey("address") && ((HashMap)data).containsKey("furnishes")) {
@@ -129,56 +129,62 @@ public class CRUDUtil {
                                             if (((HashMap<?, ?>) ((HashMap<?, ?>) data).get("address")).get(el.split("__")[1]).toString().toUpperCase().contains(filters.get(el).toString().toUpperCase()))
                                             {
                                                 isContains.add(true);
+                                                numOfFilters++;
                                             }
                                             else {
                                                 isContains.add(false);
                                             }
-                                            numOfFilters++;
                                         }
                                         else if(el.contains("furnishes__")  && !filters.get(el).toString().isEmpty()) {
                                             if (((HashMap<?, ?>) ((HashMap<?, ?>) data).get("furnishes")).get(el.split("__")[1]).toString().toUpperCase().contains(filters.get(el).toString().toUpperCase()))
                                             {
                                                 isContains.add(true);
+                                                numOfFilters++;
                                             }
                                             else {
                                                 isContains.add(false);
                                             }
-                                            numOfFilters++;
+
                                         }
                                     }
                                 } else{
                                     isContains.add(false);
-                                    numOfFilters++;
                                 }
                             }
-                            else if(filters.toString().contains("address__") && ((HashMap)data).containsKey("address")) {
-                                for (String el : filters.keySet()) {
-                                    if(el.contains("address__") && !filters.get(el).toString().isEmpty()){
-                                        if (((HashMap<?, ?>) ((HashMap<?, ?>) data).get("address")).get(el.split("__")[1]).toString().toUpperCase().contains(filters.get(el).toString().toUpperCase())) {
-                                             isContains.add(true);
+                            else if(filters.toString().contains("address__")) {
+                                if(((HashMap)data).containsKey("address")) {
+                                    for (String el : filters.keySet()) {
+                                        if (el.contains("address__") && !filters.get(el).toString().isEmpty()) {
+                                            if (((HashMap<?, ?>) ((HashMap<?, ?>) data).get("address")).get(el.split("__")[1]).toString().toUpperCase().contains(filters.get(el).toString().toUpperCase())) {
+                                                isContains.add(true);
+                                                numOfFilters++;
+                                            } else {
+                                                isContains.add(false);
+                                            }
+
                                         }
-                                        else {
-                                            isContains.add(false);
-                                        }
-                                        numOfFilters++;
                                     }
+                                } else {
+                                    isContains.add(false);
                                 }
                             }
-                            else if(filters.toString().contains("furnishes__") && ((HashMap)data).containsKey("furnishes")) {
-                                for (String el : filters.keySet()) {
-                                    if(el.contains("furnishes__") && !filters.get(el).toString().isEmpty()){
-                                        if (((HashMap<?, ?>) ((HashMap<?, ?>) data).get("furnishes")).get(el.split("__")[1]).toString().toUpperCase().contains(filters.get(el).toString().toUpperCase())) {
-                                            isContains.add(true);
+                            else if(filters.toString().contains("furnishes__")) {
+                                if(((HashMap)data).containsKey("furnishes")){
+                                    for (String el : filters.keySet()) {
+                                        if(el.contains("furnishes__") && !filters.get(el).toString().isEmpty() && filters.get(el).toString()!=null  && filters.get(el).toString()!="false"){
+                                            if (((HashMap<?, ?>) ((HashMap<?, ?>) data).get("furnishes")).get(el.split("__")[1]).toString().toUpperCase().contains(filters.get(el).toString().toUpperCase())) {
+                                                isContains.add(true);
+                                                numOfFilters++;
+                                            }
+                                            else {
+                                                isContains.add(false);
+                                            }
                                         }
-                                        else {
-                                            isContains.add(false);
-                                        }
-                                        numOfFilters++;
                                     }
+                                } else {
+                                    isContains.add(false);
                                 }
-                            } else {
-                                isContains.add(false);
-                                numOfFilters++;
+
                             }
                             map.put(kv, ((HashMap)data).get(kv));
                         }
@@ -190,15 +196,34 @@ public class CRUDUtil {
                         }
                     }
                 }
-                if(listOfObject.size() > limit || page !=0){
-                    List<Map<Object, Object>> listOfObject2 = new ArrayList<>();
-                    for (int i = indexOfElement; i < indexOfElement+limit; i++) {
-                        listOfObject2.add(listOfObject.get(i));
+                List<Map<Object, Object>> listOfObject3 = new ArrayList<>();
+                if(listOfObject.size() > indexOfElement && page != 0) {
+
+                    if(listOfObject.size() < indexOfElement+limit) {
+                        for (int i = indexOfElement; i < listOfObject.size(); i++) {
+                            listOfObject3.add(listOfObject.get(i));
+                        }
+                    }else{
+                        for (int i = indexOfElement; i < indexOfElement+limit; i++) {
+                            listOfObject3.add(listOfObject.get(i));
+                        }
                     }
+                }
+                else if(listOfObject.size() > 0 && page == 0) {
+                    if(listOfObject.size() < limit) {
+                        for (int i = 0; i < listOfObject.size(); i++) {
+                            listOfObject3.add(listOfObject.get(i));
+                        }
+                    }else{
+                        for (int i = 0; i < limit; i++) {
+                            listOfObject3.add(listOfObject.get(i));
+                        }
+                    }
+
                 }
                 List<Map<Object, Object>> listOfObject2 = new ArrayList<>();
                 Map<Object, Object> map = new HashMap<>();
-                map.put("items",listOfObject);
+                map.put("items",listOfObject3);
                 map.put("totalItems", currentIndex);
                 int totalNumOfPge = currentIndex/limit;
                 map.put("totalPages", totalNumOfPge);
