@@ -10,6 +10,7 @@ const NewsItem = (props) => {
       </a>
       <img
         src="/news-img.png"
+        className="news-img"
         height={200}
         style={{ position: "absolute", right: 0, top: 0 }}
       />

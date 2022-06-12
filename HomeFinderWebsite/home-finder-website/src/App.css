@@ -172,6 +172,23 @@ html {
   margin: 0 10px 0 0;
 }
 
+.filters-home-container {
+  background: #f8f6da;
+  display: flex;
+  justify-content: center;
+  height: 100px;
+}
+
+.filters-home {
+  padding: 10px 20px;
+  color: #265954;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 80%;
+  justify-content: center;
+}
+
 .home-offers-container {
   display: flex;
   width: 100%;
@@ -181,7 +198,7 @@ html {
 }
 
 .offer-home-container {
-  max-width: 900px;
+  width: 900px;
   background: #fcfbed;
   box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.2);
   border-radius: 45px;
@@ -292,7 +309,7 @@ html {
 
 .news-container {
   display: flex;
-  width: 800px;
+  max-width: 800px;
   flex-direction: column;
   align-items: center;
   margin: 30px 0 0 0;
@@ -300,14 +317,14 @@ html {
 
 .news-item {
   width: 100%;
-  height: 200px;
+  min-height: 200px;
   position: relative;
 
   background: #fcfbed;
   box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.2);
   border-radius: 45px;
   margin: 30px 0 30px 0;
-  padding: 20px 100px 40px 30px;
+  padding: 20px 200px 40px 30px;
 }
 
 .news-item h3 {
@@ -333,7 +350,7 @@ html {
 
 .news-details-container {
   display: flex;
-  width: 800px;
+  max-width: 800px;
   flex-direction: column;
   align-items: center;
   margin: 30px 0 30px 0;
@@ -393,7 +410,7 @@ html {
 
 .contact-container {
   display: flex;
-  width: 800px;
+  max-width: 800px;
   min-height: 260px;
   flex-direction: column;
   align-items: center;
@@ -458,7 +475,7 @@ html {
 
 .ann-details-container {
   display: flex;
-  width: 1200px;
+  max-width: 1200px;
   flex-direction: column;
   align-items: center;
   margin: 30px 0 30px 0;
@@ -506,6 +523,11 @@ h3 {
 .ann-details-descr {
   display: flex;
   flex-direction: column;
+}
+
+.ann-swiper-wrapper {
+  position: relative;
+  width: 540px;
 }
 
 .login-root {
@@ -681,8 +703,37 @@ ADMIN PANEL
 
 .admin-list-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   min-height: calc(100vh - 110px);
+}
+
+.admin-action-form-container {
+  display: flex;
+  justify-content: center;
+  min-height: calc(100vh - 200px);
+}
+
+.admin-action-field {
+  margin: 20px;
+  display: flex;
+  width: 600px;
+  justify-content: space-between;
+}
+
+.admin-action-input {
+  width: 500px;
+}
+
+.admin-action-form-btns {
+  display: flex;
+  justify-content: space-between;
+}
+
+.admin-home-container-line {
+  height: 10px;
+  width: 100%;
+  background-color: #e1e1c0;
 }
 
 .dropbtn {
@@ -738,11 +789,11 @@ ADMIN PANEL
   display: block;
 }
 
-.pagination a{
+.pagination a {
   color: #a7695c !important;
 }
 
-.active a{
+.active a {
   background-color: #a7695c !important;
   border-color: #a7695c !important;
   color: #ffffff !important;
@@ -768,7 +819,7 @@ ADMIN PANEL
   .header-main-menu-container {
     display: none;
   }
-  .offer-home-info{
+  .offer-home-info {
     cursor: pointer;
   }
   .offer-home-subcontainer {
@@ -798,5 +849,34 @@ ADMIN PANEL
   }
   .slider-header-search input {
     margin: 0;
+  }
+  .news-img {
+    display: none;
+  }
+  .news-item {
+    padding: 20px;
+  }
+  .contact-container {
+    padding: 30px;
+  }
+  .contact-container img {
+    display: none;
+  }
+  .login-container {
+    width: unset;
+    max-width: 600px;
+  }
+  .ann-details-body {
+    flex-direction: column;
+    align-items: center;
+  }
+  .ann-swiper-wrapper {
+    width: 300px;
+  }
+  .filters-home-container {
+    height: 300px;
+  }
+  .offer-home-container{
+    max-width: 400px;
   }
 }

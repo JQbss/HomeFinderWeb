@@ -14,15 +14,15 @@ ReactDOM.render(
         <Route path="login" element={<App page={"login"} />} />
         <Route path="register" element={<App page={"register"} />} />
         <Route path="user-profile" element={<App page={"user-profile"} />} />
-        <Route path="news" element={<App page={"news"} />} />
-        <Route path="news/:newsId" element={<App page={"news-details"} />} />
+        <Route path="user-profile-edit" element={<App page={"user-profile-edit"} />} />       
+        {/* <Route path="news" element={<App page={"news"} />} />
+        <Route path="news/:newsId" element={<App page={"news-details"} />} /> */}
         <Route path="contact" element={<App page={"contact"} />} />
         <Route path="about" element={<App page={"about"} />} />
         <Route
           path="announcement/:announcementId"
           element={<App page={"announcement"} />}
-        />
-        <Route path="*" element={<App />} />
+        />       
         <Route path="admin" element={<App admin page={"admin-home"} />} />
         <Route path="admin/login" element={<App admin page={"admin-login"} />} />
         <Route
@@ -30,9 +30,14 @@ ReactDOM.render(
           element={<App admin page={"admin-list"} />}
         />
         <Route
+          path="admin/:entity/:action/:id"
+          element={<App admin page={"admin-action"} />}
+        />
+                <Route
           path="admin/:entity/:action"
           element={<App admin page={"admin-action"} />}
         />
+        <Route path="*" element={<App />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,

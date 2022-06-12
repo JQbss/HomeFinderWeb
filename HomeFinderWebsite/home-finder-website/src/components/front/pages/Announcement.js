@@ -13,6 +13,7 @@ import "swiper/swiper.scss"; // core Swiper
 import "swiper/modules/navigation/navigation.scss"; // Navigation module
 import "swiper/modules/pagination/pagination.scss"; // Pagination module
 import { FurnitureObject } from "../fragments/FurnitureObject";
+import { filtersList } from "../config/furnitureFilter";
 
 const Announcement = (props) => {
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ const Announcement = (props) => {
           <h2>{annData?.title}</h2>
 
           <div className="ann-details-body">
-            <div style={{ position: "relative", width: 540 }}>
+            <div className="ann-swiper-wrapper">
               <Swiper pagination autoplay loop>
                 {annData?.imageLinks?.map((x, index) => (
                   <SwiperSlide key={index}>
@@ -49,12 +50,18 @@ const Announcement = (props) => {
               </Swiper>
               <h3>Wyposażenie:</h3>
               <div className="offer-home-info-list">
-                <FurnitureObject name={"Łóżko"} />
+                {filtersList.map((filter) => {
+                  for (const [key, value] of Object.entries(annData)) {
+                    if (filter[0] == key && value)
+                      return <FurnitureObject name={filter[1]} />;
+                  }
+                })}
+                {/* <FurnitureObject name={"Łóżko"} />
                 <FurnitureObject name={"Dywan"} />
                 <FurnitureObject name={"Fotel"} />
                 <FurnitureObject name={"Lodówka"} />
                 <FurnitureObject name={"Pralka"} />
-                <FurnitureObject name={"Wanna"} />
+                <FurnitureObject name={"Wanna"} /> */}
               </div>
             </div>
             <div className="ann-details-descr">

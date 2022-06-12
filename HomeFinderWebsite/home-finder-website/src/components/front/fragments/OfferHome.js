@@ -9,6 +9,7 @@ import "swiper/swiper.scss"; // core Swiper
 import "swiper/modules/navigation/navigation.scss"; // Navigation module
 import "swiper/modules/pagination/pagination.scss"; // Pagination module
 import { FurnitureObject } from "./FurnitureObject";
+import { filtersList } from "../config/furnitureFilter";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -72,12 +73,18 @@ const OfferHome = (props) => {
           <span>Cena: {props.price ? props.price : "-"} zł</span>
           <span>Rozpoznane umeblowanie:</span>
           <div className="offer-home-info-list">
-            <FurnitureObject name={"Łóżko"} />
+            {filtersList.map((filter) => {
+              for (const [key, value] of Object.entries(props)) {
+                if (filter[0] == key && value)
+                  return <FurnitureObject name={filter[1]} />;
+              }
+            })}
+            {/* <FurnitureObject name={"Łóżko"} />
             <FurnitureObject name={"Dywan"} />
             <FurnitureObject name={"Fotel"} />
             <FurnitureObject name={"Lodówka"} />
             <FurnitureObject name={"Pralka"} />
-            <FurnitureObject name={"Wanna"} />
+            <FurnitureObject name={"Wanna"} /> */}
           </div>
         </div>
       </div>
