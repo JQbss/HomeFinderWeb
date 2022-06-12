@@ -1,6 +1,6 @@
 export const entities = {
   announcement: {
-    list: ["uid", { address: ["miejscowosc"] }, "price"],
+    list: ["uid", "localization", "price"],
     listLabels: ["id", "Miejscowość", "Cena, zł"],
     edit: true,
     editFields: [
@@ -18,7 +18,7 @@ export const entities = {
     ],
     createLabels: ["Nazwa", "Miasto", "Opis", "Cena, zł"],
   },
-  users:{
+  users: {
     list: ["uid", "email"],
     listLabels: ["id", "E-mail"],
     edit: true,
@@ -34,5 +34,5 @@ export const entities = {
       { lastName: "text" },
     ],
     createLabels: ["E-mail", "Imię", "Nazwisko"],
-  }
+  },
 };
