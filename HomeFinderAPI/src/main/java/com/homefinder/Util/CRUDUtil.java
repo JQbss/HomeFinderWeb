@@ -86,6 +86,16 @@ public class CRUDUtil {
                         }
                         List<Boolean> isContains= new ArrayList<Boolean>();
                         int numOfFilters = 0;
+
+                        List<String> deleteFilter = new ArrayList<>();
+                        for (String el : filters.keySet()) {
+                            if (el.contains("furnishes__") && filters.get(el).toString().toUpperCase().equals("FALSE")) {
+                                deleteFilter.add(el);
+                            }
+                        }
+                        for(String el : deleteFilter){
+                            filters.remove(el);
+                        }
                         for (Object kv :((HashMap) data).keySet()) {
                             if(filters.containsKey(kv) && !filters.get(kv).toString().isEmpty() && !kv.toString().equals("address") && !kv.toString().equals("furnishes")) {
                                 if(filters.get(kv).toString().contains(":")) {
@@ -171,14 +181,14 @@ public class CRUDUtil {
                             else if(filters.toString().contains("furnishes__")) {
                                 if(((HashMap)data).containsKey("furnishes")){
                                     for (String el : filters.keySet()) {
-                                        if(el.contains("furnishes__") && !filters.get(el).toString().isEmpty() && filters.get(el).toString()!=null  && filters.get(el).toString()!="false"){
+                                        if(el.contains("furnishes__") && !filters.get(el).toString().isEmpty() && filters.get(el).toString()!=null && filters.get(el).toString().toUpperCase()!="FALSE"){
                                             if (((HashMap<?, ?>) ((HashMap<?, ?>) data).get("furnishes")).get(el.split("__")[1]).toString().toUpperCase().contains(filters.get(el).toString().toUpperCase())) {
                                                 isContains.add(true);
                                                 numOfFilters++;
-                                            }
-                                            else {
+                                            } else {
                                                 isContains.add(false);
                                             }
+
                                         }
                                     }
                                 } else {
