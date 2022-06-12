@@ -24,7 +24,17 @@ const Announcement = (props) => {
   useEffect(() => {
     setLoading(true);
     FetchManager.GetOne("announcement", announcementId)
-      .then((data) => setAnnData(data))
+      .then((data) =>
+        setAnnData({
+          ...data,
+
+          isBed: true,
+          isTeapot: true,
+          isOven: true,
+          isBed: true,
+          isTable: true,
+        })
+      )
       .finally(() => setLoading(false));
   }, []);
 

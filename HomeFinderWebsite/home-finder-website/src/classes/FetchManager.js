@@ -10,7 +10,12 @@ class FetchManager {
         else return "error";
       })
       .then((data) => {
-        return data;
+        if (data == "error") return "error";
+        return fetch(`${process.env.REACT_APP_API}/users/${data?.uid}`, {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }).then((resp) => resp?.json().then((userInfo) => userInfo));
       });
   }
 
@@ -29,12 +34,7 @@ class FetchManager {
       });
   }
 
-  static async GetMany(
-    entityName,
-    page = 0,
-    limit = 25,
-    filters
-  ) {
+  static async GetMany(entityName, page = 0, limit = 25, filters) {
     let filtersStr = "";
     if (filters instanceof Object)
       for (const [key, value] of Object.entries(filters)) {
@@ -74,7 +74,7 @@ class FetchManager {
 
   static async EditUserData(userId, data) {
     return fetch(`${process.env.REACT_APP_API}/users/${userId}`, {
-      method: "PUT",
+      method: "PATCH",
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
@@ -109,7 +109,6 @@ class FetchManager {
     return fetch(`${process.env.REACT_APP_API}/${entityName}/${id}`, {
       method: "DELETE",
       headers: {
-        "Content-Type": "application/json",
         Authorization: localStorage.getItem("token"),
       },
     }).then((response) => "ok");

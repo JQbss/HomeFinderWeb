@@ -7,7 +7,6 @@ import { entities } from "../config/entities";
 const AdminAction = (props) => {
   const { entity, action, id } = useParams();
   const [fields, setFields] = useState([]);
-  console.log(entity, action, id);
 
   useEffect(() => {
     switch (action) {
@@ -86,10 +85,14 @@ const AdminAction = (props) => {
         data[field.name] = field.value;
     }
 
-    if (action == "edit") FetchManager.Patch(entity, id, data);
-    else if (action == "create") FetchManager.Post(entity, data);
-
-    window.location.href = `/admin/${entity}`;
+    if (action == "edit")
+      FetchManager.Patch(entity, id, data).then(
+        (resp) => (window.location.href = `/admin/${entity}`)
+      );
+    else if (action == "create")
+      FetchManager.Post(entity, data).then(
+        (resp) => (window.location.href = `/admin/${entity}`)
+      );
   };
 
   return (
@@ -109,8 +112,9 @@ const AdminAction = (props) => {
               name="delete"
               isSubmit={false}
               onClick={() => {
-                FetchManager.Delete(entity, id);
-                window.location.href = `/admin/${entity}`;
+                FetchManager.Delete(entity, id).then(
+                  //(resp) => (window.location.href = `/admin/${entity}`)
+                );
               }}
               btnType="btn"
               type={0}

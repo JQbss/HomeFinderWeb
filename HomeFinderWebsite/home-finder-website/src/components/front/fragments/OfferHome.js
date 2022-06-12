@@ -24,6 +24,16 @@ const OfferHome = (props) => {
     setBlur(false);
   };
 
+  // props = {
+  //   isBed: true,
+  //   isTeapot: true,
+  //   isOven: true,
+  //   isWindowShade: true,
+  //   isBed: true,
+  //   isTable: true,
+  //   ...props,
+  // };
+
   return (
     <div className={`offer-home-container`}>
       {blur && (

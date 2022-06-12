@@ -29,7 +29,7 @@ const UserProfileEdit = (props) => {
       if (field.name != "submit") data[field.name] = field.value;
     }
     FetchManager.EditUserData(userData.uid, data).then((response) => {
-      console.log(response);
+      window.location.href = "/user-profile";
     });
   };
 

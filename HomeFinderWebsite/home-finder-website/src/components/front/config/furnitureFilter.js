@@ -6,7 +6,7 @@ export const filtersList = [
   ["isSofa", "Sofa"],
   ["isCommode", "Komoda"],
   ["isChairs", "Krzesła"],
-  ["isStove", "Kochenka"],
+  ["isStove", "Kuchenka"],
   ["isTableLamp", "Lampa stołowa"],
   ["isRefrigerator", "Lodówka"],
   ["isBed", "Łóżko"],
