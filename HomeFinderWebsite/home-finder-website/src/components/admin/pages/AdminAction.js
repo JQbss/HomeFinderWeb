@@ -113,7 +113,7 @@ const AdminAction = (props) => {
               isSubmit={false}
               onClick={() => {
                 FetchManager.Delete(entity, id).then(
-                  //(resp) => (window.location.href = `/admin/${entity}`)
+                  (resp) => (window.location.href = `/admin/${entity}`)
                 );
               }}
               btnType="btn"
