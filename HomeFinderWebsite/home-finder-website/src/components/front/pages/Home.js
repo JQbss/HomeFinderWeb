@@ -5,6 +5,8 @@ import TitleLocationHome from "../fragments/TitleLocationHome";
 import FetchManager from "../../../classes/FetchManager";
 import { Oval } from "react-loader-spinner";
 import Pagination from "react-js-pagination";
+import FiltersHome from "../fragments/FiltersHome";
+import { filtersList } from "../config/furnitureFilter";
 
 const Offers = (props) => {
   const filters = props.filters;
@@ -64,7 +66,11 @@ const Home = (props) => {
   const [filters, setFilters] = useState({ localization: "Warszawa" });
 
   const filtersHandler = (_filters) => {
-    setFilters(_filters);
+    setFilters((old) => {
+      if (_filters.localization != old.localization && _filters.localization)
+        return { ..._filters };
+      else return { localization: old.localization, ..._filters };
+    });
     _filters?.localization
       ? setAddress(_filters?.localization)
       : setAddress("Wszystkie regiony");
@@ -87,6 +93,8 @@ const Home = (props) => {
       <HeroHome filtersHandler={filtersHandler} />
       <div className="home-container-line" />
       <TitleLocationHome location={address} />
+      <div className="home-container-line" />
+      <FiltersHome filtersList={filtersList} filtersHandler={filtersHandler} />
       <div className="home-container-line" />
       <div className="home-offers-container" id="offers">
         <Offers filters={filters} />
