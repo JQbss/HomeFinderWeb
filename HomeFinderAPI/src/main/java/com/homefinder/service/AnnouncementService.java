@@ -77,7 +77,7 @@ public class AnnouncementService{
     }
 
     public String deleteById(String id) throws FirebaseAuthException {
-        if(announcementRef.child(id)==null){
+        if(announcementRef.child(id) != null){
             announcementRef.child(id).removeValueAsync();
             return id;
         }
@@ -104,7 +104,10 @@ public class AnnouncementService{
     }
 
     public String getOne(String id) throws ExecutionException, InterruptedException {
-       return CRUDUtil.getOne(announcementRef,id);
+        if(announcementRef.child(id)!= null){
+            return CRUDUtil.getOne(announcementRef, id);
+        }
+       return null;
     }
 
 }

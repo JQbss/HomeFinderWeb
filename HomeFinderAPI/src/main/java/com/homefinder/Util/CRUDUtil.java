@@ -249,9 +249,11 @@ public class CRUDUtil {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Object document = dataSnapshot.child(id).getValue();
                 Map<Object, Object> map = new HashMap<>();
-                map.put("uid", id);
-                for (Object kv :((HashMap) document).keySet()) {
-                    map.put(kv, ((HashMap)document).get(kv));
+                if(dataSnapshot.child(id).getValue()!=null){
+                    map.put("uid", id);
+                    for (Object kv :((HashMap) document).keySet()) {
+                        map.put(kv, ((HashMap)document).get(kv));
+                    }
                 }
                 getOne[0].complete(new Gson().toJson(map));
             }

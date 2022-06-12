@@ -84,7 +84,6 @@ public class AnnouncementController {
 
     @RequestMapping(method = RequestMethod.GET, path = "/{id}", produces = "application/json;charset=utf-8")
     public ResponseEntity<?> getOne(@PathVariable String id) throws ExecutionException, InterruptedException {
-        DeferredResult<ResponseEntity<?>> result = new DeferredResult<>();
         String res = announcementService.getOne(id);
         if(res!=null){
             return ResponseEntity.ok(res);
