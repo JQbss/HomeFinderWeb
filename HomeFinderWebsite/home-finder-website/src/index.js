@@ -15,8 +15,8 @@ ReactDOM.render(
         <Route path="register" element={<App page={"register"} />} />
         <Route path="user-profile" element={<App page={"user-profile"} />} />
         <Route path="user-profile-edit" element={<App page={"user-profile-edit"} />} />       
-        <Route path="news" element={<App page={"news"} />} />
-        <Route path="news/:newsId" element={<App page={"news-details"} />} />
+        {/* <Route path="news" element={<App page={"news"} />} />
+        <Route path="news/:newsId" element={<App page={"news-details"} />} /> */}
         <Route path="contact" element={<App page={"contact"} />} />
         <Route path="about" element={<App page={"about"} />} />
         <Route
@@ -31,6 +31,10 @@ ReactDOM.render(
         />
         <Route
           path="admin/:entity/:action/:id"
+          element={<App admin page={"admin-action"} />}
+        />
+                <Route
+          path="admin/:entity/:action"
           element={<App admin page={"admin-action"} />}
         />
         <Route path="*" element={<App />} />

@@ -15,7 +15,6 @@ const AdminHome = (props) => {
       <div className="admin-home-root">
         <div className="admin-home-container">
           <AdminItem header="Ogłoszenia" link="announcement" />
-          <AdminItem header="Aktualności" link="news" />
           <AdminItem header="Użytkownicy" link="users" />
         </div>
       </div>

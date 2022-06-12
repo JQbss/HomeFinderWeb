@@ -9,6 +9,7 @@ const ButtonStandart = ({
   onClick = null,
   hashLink = false,
   name = "",
+  isSubmit = true,
 }) => {
   switch (btnType) {
     case "link":
@@ -34,7 +35,7 @@ const ButtonStandart = ({
     case "btn":
       return (
         <button
-          type="submit"
+          type={isSubmit ? "submit" : "button"}
           className={type == 0 ? "button-normal" : "button-trans"}
           onClick={onClick}
           name={name}

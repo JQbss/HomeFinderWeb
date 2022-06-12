@@ -15,7 +15,12 @@ const AdminAction = (props) => {
         FetchManager.GetOne(entity, id).then((response) => {
           FieldGenerator(response, action);
         });
+        break;
       case "create":
+        FieldGenerator(null, action);
+        break;
+      default:
+        break;
     }
   }, []);
 
@@ -52,36 +57,75 @@ const AdminAction = (props) => {
           );
         }
       });
+    } else if (action == "create") {
+      entities[entity]?.[`${action}Fields`].map((field, i) => {
+        for (const [key, value] of Object.entries(field)) {
+          _elements.push(
+            <div className="admin-action-field">
+              <span>{_fieldsLabels[i]}:</span>
+              {value == "textarea" ? (
+                <textarea name={key} rows={10} className="admin-action-input" />
+              ) : (
+                <input name={key} type={value} className="admin-action-input" />
+              )}
+            </div>
+          );
+        }
+      });
     }
 
     setFields(_elements);
   };
 
+  const onSubmitHandle = (e) => {
+    e.preventDefault();
+    const data = {};
+    for (let i = 0; i < e.target.elements.length; i++) {
+      let field = e.target.elements[i];
+      if (!["submit", "delete"].includes(field.name))
+        data[field.name] = field.value;
+    }
+
+    if (action == "edit") FetchManager.Patch(entity, id, data);
+    else if (action == "create") FetchManager.Post(entity, data);
+
+    window.location.href = `/admin/${entity}`;
+  };
+
   return (
     <div className="admin-action-form-container">
-      <form>
+      <form onSubmit={onSubmitHandle}>
         {fields}
-        <ButtonStandart
-          name="submit"
-          btnType="btn"
-          type={1}
-          label="Zapisz"
-          style={{ magin: 10 }}
-        />
-        <ButtonStandart
-          name="delete"
-          btnType="btn"
-          type={0}
-          label="Usuń"
-          style={{ magin: 10 }}
-        />
-        <ButtonStandart
-          btnType="link"
-          href={`/admin/${entity}`}
-          type={1}
-          label="Powrót"
-          style={{ magin: 10 }}
-        />
+        <div className="admin-action-form-btns">
+          <ButtonStandart
+            name="submit"
+            btnType="btn"
+            type={1}
+            label="Zapisz"
+            style={{ magin: 10 }}
+          />
+          {action == "edit" && (
+            <ButtonStandart
+              name="delete"
+              isSubmit={false}
+              onClick={() => {
+                FetchManager.Delete(entity, id);
+                window.location.href = `/admin/${entity}`;
+              }}
+              btnType="btn"
+              type={0}
+              label="Usuń"
+              style={{ magin: 10 }}
+            />
+          )}
+          <ButtonStandart
+            btnType="link"
+            href={`/admin/${entity}`}
+            type={1}
+            label="Powrót"
+            style={{ magin: 10 }}
+          />
+        </div>
       </form>
     </div>
   );

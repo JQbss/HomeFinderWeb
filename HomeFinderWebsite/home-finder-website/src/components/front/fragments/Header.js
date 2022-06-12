@@ -35,9 +35,9 @@ const Header = (props) => {
           <li>
             <a href="/#offers">Wyszukaj</a>
           </li>
-          <li>
+          {/* <li>
             <a href="/news">Aktualności</a>
-          </li>
+          </li> */}
           <li>
             <a href="/about">Jak to działa?</a>
           </li>
@@ -51,9 +51,9 @@ const Header = (props) => {
           <li>
             <a href="/#offers">Wyszukaj</a>
           </li>
-          <li>
+          {/* <li>
             <a href="/news">Aktualności</a>
-          </li>
+          </li> */}
           <li>
             <a href="/about">Jak to działa?</a>
           </li>
