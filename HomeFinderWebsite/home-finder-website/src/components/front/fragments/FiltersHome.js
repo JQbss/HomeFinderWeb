@@ -13,18 +13,20 @@ const FiltersHome = ({ filtersList, filtersHandler }) => {
   };
 
   return (
-    <div className="filters-home-container">
-      <form onSubmit={onSubmitHandler} className="filters-home">
-        {filtersList?.map((filter) => (
-          <FilterFragment
-            name={filter[0]}
-            label={filter[1]}
-            filtersHandler={filtersHandler}
-          />
-        ))}
+    <form onSubmit={onSubmitHandler}>
+      <div className="filters-home-container">
+        <div className="filters-home">
+          {filtersList?.map((filter) => (
+            <FilterFragment
+              name={filter[0]}
+              label={filter[1]}
+              filtersHandler={filtersHandler}
+            />
+          ))}
+        </div>
         <ButtonStandart btnType="btn" label="Zastosuj" name="filtersSubmit" />
-      </form>
-    </div>
+      </div>
+    </form>
   );
 };
 

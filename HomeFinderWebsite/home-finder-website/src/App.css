@@ -198,7 +198,7 @@ html {
 }
 
 .offer-home-container {
-  max-width: 900px;
+  width: 900px;
   background: #fcfbed;
   box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.2);
   border-radius: 45px;
@@ -875,5 +875,8 @@ ADMIN PANEL
   }
   .filters-home-container {
     height: 300px;
+  }
+  .offer-home-container{
+    max-width: 400px;
   }
 }
