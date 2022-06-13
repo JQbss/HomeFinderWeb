@@ -84,9 +84,11 @@ const OfferHome = (props) => {
           <span>Rozpoznane umeblowanie:</span>
           <div className="offer-home-info-list">
             {filtersList.map((filter) => {
-              for (const [key, value] of Object.entries(props)) {
-                if (filter[0] == key && value)
-                  return <FurnitureObject name={filter[1]} />;
+              if (props?.furnishes) {
+                for (const [key, value] of Object.entries(props?.furnishes)) {
+                  if (filter[0] == key && value == "TRUE")
+                    return <FurnitureObject name={filter[1]} />;
+                }
               }
             })}
             {/* <FurnitureObject name={"Łóżko"} />

@@ -39,6 +39,7 @@ const Offers = (props) => {
             price={offer.price}
             id={offer.uid}
             title={offer.title}
+            furnishes={offer.furnishes}
           />
         ))
       ) : (

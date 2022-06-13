@@ -7,7 +7,7 @@ const FiltersHome = ({ filtersList, filtersHandler }) => {
     const data = {};
     for (let i = 0; i < e.target.elements.length; i++) {
       let field = e.target.elements[i];
-      if (field.value == "true") data[`Furnishes__${field.name}`] = true;
+      if (field.value == "true") data[`furnishes__${field.name}`] = true;
     }
     filtersHandler(data);
   };

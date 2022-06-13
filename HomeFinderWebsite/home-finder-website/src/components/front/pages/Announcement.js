@@ -51,9 +51,11 @@ const Announcement = (props) => {
               <h3>Wyposażenie:</h3>
               <div className="offer-home-info-list">
                 {filtersList.map((filter) => {
-                  for (const [key, value] of Object.entries(annData)) {
-                    if (filter[0] == key && value)
-                      return <FurnitureObject name={filter[1]} />;
+                  if (annData?.furnishes) {
+                    for (const [key, value] of Object.entries(annData?.furnishes)) {
+                      if (filter[0] == key && value)
+                        return <FurnitureObject name={filter[1]} />;
+                    }
                   }
                 })}
                 {/* <FurnitureObject name={"Łóżko"} />
